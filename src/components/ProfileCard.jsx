@@ -7,7 +7,6 @@ import styles from './ProfileCard.module.css';
 // eslint-disable-next-line react/prop-types
 function ProfileCard({ obj }) {
   const profile = new ProfileModel(obj);
-  console.log(profile);
   return (
     <div className={styles.cardContainer}>
       {profile.background
@@ -26,8 +25,7 @@ function ProfileCard({ obj }) {
           <div className={styles.nameJob}>
             <h3 className={styles.name}>{profile.name}</h3>
             <div className={styles.job}>
-              <ShoppingBag color="black" size={16} />
-              {' '}
+              <ShoppingBag color="white" size={16} style={{ paddingRight: '8px' }} />
               <div>{profile.job}</div>
             </div>
           </div>
