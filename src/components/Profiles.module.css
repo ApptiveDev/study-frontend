@@ -1,0 +1,12 @@
+h1 {
+  text-align: center;
+  margin: 100px;
+}
+
+.profileContainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px;
+  gap: 40px;
+  align-content: space-between;
+}
