@@ -1,0 +1,66 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  border-radius: 16px;
+  color: white;
+  border-width: 1px;
+  border-style: solid;
+  overflow: hidden;
+  width: 45%;
+  flex-grow: 1;
+
+}
+
+.background {
+  width: 100vw;
+  height: 100px;
+  background-color: lightgray;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  padding: 24px;
+  color: white;
+}
+
+.profileImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profileInfo {
+  margin: 10px 0;
+}
+
+.nameJob {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.name {
+  margin-bottom: 4px;
+  flex-grow: 1;
+  flex-basis: 300px;
+  text-align: start;
+}
+
+.job {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.bio {
+  margin-top: 20px;
+  text-align: start;
+  overflow: auto;
+}
