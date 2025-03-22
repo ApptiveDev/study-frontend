@@ -1,12 +1,3 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- npm 외의 다른 패키지 매니저에는 어떤 것들이 있을까요? npm에 비해 갖는 장점은 무엇일까요?
+- 프로젝트를 생성했을 때 나오는 각 파일들은 어떤 역할을 하나요?
+- src 폴더는 우리가 만들 웹 애플리케이션의 소스 모듈이 위치한 곳입니다. src 내부의 폴더 구조를 어떻게 설정할 수 있을까요? 다양한 방법을 조사해주세요.
