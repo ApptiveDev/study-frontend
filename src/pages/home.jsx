@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="container">
       <div className="phone">
-        {/* Header */}
+        {/* header */}
         <header className="header">
           <span className="site-name">SiteName</span>
           <div className="button-group">
@@ -29,9 +29,10 @@ const Home = () => {
 
         {/* Navigation */}
         <nav className="navigation">
-          {[0, 1, 2, 3].map((_, idx) => (
-            <div key={idx} className="navigation-button"></div>
-          ))}
+          <div className="navigation-button"></div>
+          <div className="navigation-button"></div>
+          <div className="navigation-button"></div>
+          <div className="navigation-button"></div>
         </nav>
       </div>
     </div>
