@@ -1,122 +1,61 @@
-<<<<<<< HEAD
-# React + TypeScript + Vite
+## 조사 1
++ *C*lient *S*ide *R*endering: 웹 페이지의 콘텐츠를 클라이언트(브라우저)에서 렌더링*하는 방식. 서버에서 HTML, CSS, Javascript 파일을 클라이언트로 보내고, 클라이언트에서 Javascript를 실행하여 동적인 웹 페이지 생성. => 서버의 부하 감소, interactive한 기능 제공 가능
+    + 과정) 서버로부터 HTML, JS  파일 다운로드 -> SPA 프레임웤, 실행 -> 페이지 보여지고 상호 작용에 따라 필요한 데이터 서버에 요청
+    + 장) 페이지 전체 요청 X 변화된 부분만 재렌더링 진행 -> SSR 보다 빠른 interaction 가능<br>
+        lazy loading(페이지 내에서 바로 필요하지 않은 데이터는 로딩 X 필요한 시점에 로딩) 지원
+    + 단) 초기 로딩 오래 걸릴 수 있음, 검색 엔진 최적화 (SEO) 어려움
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
++ *S*erver *S*ide *R*endering: 서버에서 html, js를 만들고 렌더링을 모두 서버에서 진행하고 클라이언트(브라우저)에 넘겨주는 방식. 
+    + 과정) 렌더링된 HTML 응답 -> 페이지 보여지고 JS 다운로드 -> SPA 프레임워크 실행 및 상호 작용에 따라 필요한 데이터 요청
+    + 장) 초기 로딩 빠름, html의 바디에 content가 담겨있어 CSR보다 SEO에 적합
+    + 단) 완전히 새로 렌더링함, 서버 과부화 발생 가능, interaction 못하는 경우 발생 가능
 
-Currently, two official plugins are available:
+*렌더링: HTML, CSS, Javascript로 작성된 문서를 해석하여 브라우저에 시각적으로 출력하는 것
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 조사 2
++ 선언적 -> WHAT: *무엇을 해결할 것인지*에 집중하여 어떻게 문제를 해결하는지에 대해서는 컴퓨터에 위임하는 방법. 목표 명시 O, 알고리즘 명시 X
++ 명령형 -> HOW : *문제를 어떻게 해결해야하는지* 컴퓨터에게 명시적으로 명령을 내리는 방법. <br> 알고리즘 명시 O, 목표 명시 X
 
-## Expanding the ESLint configuration
+=> 선언적 방식의 접근을 위해선 명령형 방식으로 어떻게 접근하는가에 관한 내용이 먼저 추상화 되어 있어야 함 
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 조사 3
+1. URL 입력 및 요청청
+    + 사용자가 브라우저에 URL 입력 -> 브라우저가 DNS 서버에 해당 도메인의 IP 주소 요청
+    + IP 주소 얻으면 해당 웹 서버로 HTTP(S) 요청
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+2. 서버 응답 및 HTML 다운로드
+    + 웹 서버: 요청 처리, 응답으로 HTML 파일 반환
+    + HTTP 상태 코드 함께 전송
+    + 브라우저: HTML 해석하며 필요한 추가 리소스 요청
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. HTML 파싱* 및 DOM 생성
+    + HTML 파일을 파싱하여 DOM(Document Object Model) 트리 생성
+    + HTML 태그가 계층 구조로 변환, 각 요소를 객체로 표현
+    + 이 과정에서 script 태그를 만나면 기본적으로 JS를 실행하기 위해 파싱을 멈추고, 실행 후 다시 진행
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+4. CSS 파싱 및 CSSOM 생성
+    + CSS 파일이 로드되면 브라우저는 이를 파싱하여 CSSOM(CSS Object Model) 트리 생성
+    + DOM과 CSSOM 결합하여 Render Tree 생성
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-=======
-## 조사 1-(1)
-+ **트랜스파일링**
-  + : 한 언어로 작성된 소스 코드를 비슷한 수준의 추상화(Abstraction)를 가진 다른 언어로 변환하는 것
-  + ex) ES6+의 코드 ES5로 변환, 리액트의 JSX를 JavaScript 코드로 변환
-  + 필요성: 브라우저 간 호환성 (<-모든 브라우저가 같은 기능 제공X)
+5. Render Tree 생성
+    + Render Tree: 실제 화면에 표시될 요소들만 포함 (display: none; 등으로 숨겨진 요소 제외), 각 요소의 스타일과 레이아웃 정보 반영
 
-+ **번들링**
-  + : 사용자에게 웹 어플리케이션을 제공하기 위해 여러 코드와 프로그램들을 묶는 것
-  + 필요성
-    - 결과물 파일들을 압축하여 크기를 줄이기 때문에 번들링 X인 원본 프로그램 파일보다 크기가 작아짐 => 실행 속도, 로딩 속도 빨라짐
-    - 번들링된 웹 어플리케이션 사용자가 임의 조작 불가능 => 어플리케이견의 무결성과 보안 강화
-    - 파일 단위의 모듈 관리.
-      ex) 기본적으로 전역 범위를 가지는 Javascript 파일이 여러 개 있을 때 변수 충돌의 문제가 발생할 수 있는데, 번들링 도구인 Webpack은 모듈 번들링을 통해 이 문제를 해결함
+6. 레이아웃 계산 (Layout, Reflow)
+    + 각 요소의 크기와 위치 계산하여 화면 배치 정보 결정
+    + 부모 요소의 크기나 위치가 변하면 자식 요소도 영향 받아 다시 계산 가능
 
-+ **폴리필**
-  + : 변경된 표준을 준수할 수 있게 기존 함수의 동작 방식을 수정하거나, 새롭게 구현한 함수의 스크립트
-  + 필요성
-    - 모든 사용자에게 일관된 웹 어플리케이션 경험 제공
-    - 기능 확장: 개발자는 최신 웹 표준을 준수하면서 오래된 브라우저와의 호환성 유지 가능
-    - 개발 생산성 향상: 특정 브라우저에 대한 예외 처리를 줄일 수 있으며, 기능 구현에 더 많은 시간을 할애 가능.
-      
-## 조사 1-(2)
-+ **대표적인 번들러**
-  +  **Webpack**: 대표적인 자바스크립트 번들러.  많은 기능과 확장성으로 좀 더 복잡한 프로젝트에서도 효율적으로 모듈을 관리할 수 있도록 도움. 에셋 매니지먼트, 코드 분할, 트랜스파일링 등을 포함한 오래된 번들러로, 레퍼런스가 많고 안정적이지만 설정이 복잡하고 느림.
-	+ **Rollup**: 번들링과 최적화에 초점을 맞춰 설정이 비교적 쉽고 Webpack보다 가볍게 사용 가능.
-	+ **Esbuild**: go로 작성된 번들러로, 코드 분할, 트랜스파일링 등을 포함. 빌드 속도가 Webpack과 Rollup에 비해 100배 정도 빠름. but 설정이 어려움.
-	+ **Vite**: 의존성과 소스 코드를 나눠서 속도를 개선하고, 코드 수정 시 자동으로 재빌드하는 HMR(Hot Module Replacement) 기능을 제공. 설정이 쉬우며, 가볍고 빠름.
+7. 페인트(Painting)
+    + 각 요소의 색상, 이미지, 텍스트 등을 픽셀로 변환하여 화면에 렌더링
+    + 이 과정에서 GPU 활용하여 최적화 가능
 
-+ **대표적인 자바스크립트 트랜스파일러**
-  + **TypeScript**: 자바스크립트의 상위 집합 언어로, 정적 타입 지원 동시에 ES6+의 기능 활용 가능. TypeScript 컴파일러를 사용하여 TypeScript 코드를 JavaScript 코드로 변환 가능.
-  + **Babel**: ES2015 이상의 자바스크립트 코드를 ES5로 변환해주는 경량화된 트랜스파일러. 빠른 변환 속도와 간결한 결과 코드를 제공함.
-  + **SWC**: Rust로 작성된 고성능 자바스크립트/타입스크립트 트랜스파일러. Babel과 비슷한 기능을 제공하면서도 빠른 컴파일 속도를 가짐.
-  + **Closure Compiler**: 구글에서 개발한 자바스크립트 트랜스파일러. 코드 압축과 최적화 기능을 포함하여 효율적인 자바스크립트 코드를 생성 가능.
+8. 합성 (Compositing)
+    + 여러 레이어가 있으면 합쳐서 최종 화면 구성
+    + CSS transform, opacity, will-change 등의 속성: 레이어 분리를 유도하여 성능 개선 가능
 
-## 조사 2-(1)
-+ **패키지 매니저**: 패키지(코드의 배포를 위해 사용되는 코드의 묶음)를 다루는 작업(패키지 설치, 업데이트, 수정, 삭제)을 편리하고 안전하게 수행하기 위해 사용되는 툴. 
-  + **NPM**: Node.js 생태계의 가장 대표적인 패키지 매니저. 강력한 CLI(Command Line Interface)를 제공하여 패키지 설치, 버전 관리, 의존성 해결 등의 기능을 수행함. 패키지 설치 시 패키지들을 각각 별도로 설치하는데, 이로 인해 공유된 의존성이 중복으로 설치될 수 있음. 의존성 트리가 깊어질수록 패키지 설치 속도가 느려지고, 디스크 공간을 많이 차지할 수 있음.
-  + **Yarn**: Facebook에서 개발한 패키지 매니저. npm의 단점을 보완하고, 더 나은 성능과 안정성을 제공하며, 여러 개의 패키지를 병렬로 설치하여 빠른 속도를 보장함. 여러 패키지를 동시에 가져오고 설치하도록 최적화되어 있어 npm보다 빠른 의존성 설치 속도와 패키지 버전 관리를 제공함. yarn.lock 파일을 사용하여 의존성 트리를 고정시켜 재현 가능한 빌드를 지원하며, 캐시 기능을 제공하여 패키지 다운로드를 최적화함.
-   + **pnpm**: npm의 의존성 문제를 해결하기 위해 고안된 패키지 매니저로, 고유 설치와 플랫 노드 모듈을 통해 의존성 관리를 최적화함. 다중 프로젝트에서 의존성을 공유하고, 중복 설치를 피하여 저장 공간을 절약할 수 있음. npm과 달리 의존성을 공유하여 저장 공간을 최적화함. Flat node_modules 구조를 사용하여 파일 시스템의 깊이를 줄이고 의존성 트리를 단순화하며, 동시 설치 기능을 지원하여 의존성 설치 속도를 향상시킴.
-  
-## 조사 2-(2)
-+ **node modules**: 프로젝트 구동에 필요한 모든 라이브러리의 소스코드를 모아둔 폴더. 보통 깃과 같은 저장소에 올릴 때는 이 폴더를 함께 올리지 않음.
-- **public**: static 파일을 모아두는 곳. 컴파일이 필요 없는 파일들이 위치하는 폴더.
-- **src**: 소스 코드를 보관하는 곳. 리액트 내부에서 작성하는 거의 모든 파일들이 이 폴더 내부에서 작성되며 이 폴더에 있는 파일들은 명령어에 따라 JS로 컴파일이 진행됨.
-	- **App.css**: App.js 스타일.
-	- **App.js**: 코드 작성 -> 프로젝트 만들어 나감.
-	- **App.test.js**: 테스트 코드 작성.
-	- **index.css**: index.html 의 스타일.
-	- **index.js**: index.html의 js파일.
-- **.gitignore**: 깃에 포함하고 싶지 않은 파일의 이름 혹은 폴더 등을 입력하는 파일.
-- **package.json**: 프로젝트에 관련된 기본적인 내용(프로젝트 이름, 버전 등)과 같은 라이브러리들의 목록 포함.
-- **README.md**: 프로젝트의 정보들을 기입하는 장소. 보통 깃과 같은 저장소에 올릴 때 프로젝트에 대한 설명을 작성하는 곳. 해당 저장소에 진입하면 가장 먼저 띄워짐.
+*파싱: 일련의 문자열로 이루어진 입력을 토큰이나 트리와 같은 구조로 변환하는 과정. 입력을 분석하여 구조적인 정보를 추출하고 해석함.
 
-## 조사 2-(3)
-1. 기능 기반: 기능 단위로 폴더 구성
-2. 유형별: 파일의 유형(components, hooks, pages 등)에 따라 폴더 구성
-3. 도메인 중심: 비즈니스 도메인(사용자 관리, 주문 관리 등)을 중심으로 구조화
-4. Next.js와 같은 프레임워크 기반
-5. 혼합형: 위의 구조들 적절히 조합하여 구성
-
-
-
-
-
-
->>>>>>> 1f3c0fa3c851cbcc88fe78bead7e97edea424522
+## 조사 4
++ 컴포넌트 기반 구조: UI를 독립적인 컴포넌트 단위로 나누어 개발, 재사용성 뛰어나 유지 보수 및 확장성 높아짐짐
++ 가상 DOM 사용: DOM의 복사본을 가상 DOM에 저장하고 변화가 필요한 부분만 일부 수정하는 방식으로 불필요한 화면의 갱신 최소화, 성능 향상 (기존: 변화 발생 시 전체 DOM 새로 그려냄냄)
++ 데이터 흐름 예측 가능
++ 모바일 앱 개발까지 이용 가능
