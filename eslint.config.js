@@ -16,6 +16,7 @@ export default [
         sourceType: 'module',
       },
     },
+    extends: ["eslint:recommended", "google"],
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
