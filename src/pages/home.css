@@ -1,0 +1,94 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .phone {
+    background-color: #f3e2c7;
+    width: 393px;
+    height: 852px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    border-radius: 4px;
+  }
+  
+  .header {
+    background-color: #f9ebd6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    font-weight: bold;
+    padding: 0px 15px 0px 20px;
+  }
+  
+  .site-name {
+    font-weight: 800;
+    font-size: 18px;
+    padding: 20px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 0.5rem;
+    padding: 15px;
+  }
+  
+  .button {
+    width: 30px;
+    height: 30px;
+    background-color: #dfc6a9;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  
+  .title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    color: #7C6C56;
+  }
+  
+  .boxes-wrap-vertical {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .box {
+    width: 160px;
+    height: 90px;
+    background-color: #dfc6a9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border-radius: 4px;
+    flex: 0 0 auto;
+  }
+  
+  .navigation {
+    background-color: #f9ebd6;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    padding: 0px 20px;
+  }
+  
+  .navigation-button {
+    width: 30px;
+    height: 30px;
+    background-color: #dfc6a9;
+  }
+  

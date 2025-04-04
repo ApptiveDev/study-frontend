@@ -1,0 +1,18 @@
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+  
+    color-scheme: light dark;
+    color: #7C6C56;
+    background-color: #242424;
+  }
+
+  * {
+    scrollbar-width: none;          /* Firefox */
+  }
+  
+  *::-webkit-scrollbar {
+    display: none;                  /* Chrome, Safari, Edge */
+  }
+  
