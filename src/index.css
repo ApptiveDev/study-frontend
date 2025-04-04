@@ -8,8 +8,6 @@
     width: 100vw;
     height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #F1DFC5;
   }
 
@@ -76,13 +74,13 @@
 
   .widgetboxes {
     width: 100%;
-    margin-left: 20px;
+    padding-left: 20px;
     margin-top: 20px;
     display: flex;
     overflow-x: auto;
     gap: 20px;
     padding-bottom: 10px; 
-    padding-right: 40px; 
+    padding-right: 20px; 
   }
   
   .widgetbox {
