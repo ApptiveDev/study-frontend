@@ -1,4 +1,7 @@
 import React from 'react';
+import Header from './header';
+import Main from './main';
+import Footer from './footer';
 import './Home.css';
 
 const Home = () => {
@@ -6,34 +9,11 @@ const Home = () => {
     <div className="container">
       <div className="phone">
         {/* header */}
-        <header className="header">
-          <span className="site-name">SiteName</span>
-          <div className="button-group">
-            <div className="button"></div>
-            <div className="button"></div>
-            <div className="button"></div>
-          </div>
-        </header>
-
+        <Header title={"title"} />
         {/* Content */}
-        <div className="content">
-          <div className="title">
-            Hello<br />World!!!
-          </div>
-          <div className="boxes-wrap-vertical">
-            {[1, 2, 3, 4, 5].map((num) => (
-              <div key={num} className="box">{num}</div>
-            ))}
-          </div>
-        </div>
-
+        <Main />
         {/* Navigation */}
-        <nav className="navigation">
-          <div className="navigation-button"></div>
-          <div className="navigation-button"></div>
-          <div className="navigation-button"></div>
-          <div className="navigation-button"></div>
-        </nav>
+        <Footer />
       </div>
     </div>
   );
