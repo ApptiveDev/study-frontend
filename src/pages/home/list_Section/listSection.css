@@ -1,0 +1,85 @@
+.list-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  padding: 10px 15px;
+  max-width: 380px;
+  max-height: 180px;
+  margin: 22px;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.list-rank {
+  font-weight: bold;
+  font-size: 18px;
+  width: 20px;
+}
+
+.list-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  padding : 0px 10px 0px 0px;
+}
+
+.list-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.list-sub {
+  font-size: 12px;
+  color: #888;
+}
+
+.heart-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: red;
+}
+
+
+.list-follow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.like-count {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.chevron {
+  font-size: 18px;
+  color: #aaa;
+}
+
+.icon-size {
+  font-size: 20px;
+}

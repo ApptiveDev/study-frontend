@@ -1,0 +1,41 @@
+.header {
+    background-color: #F2F2F2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    font-weight: bold;
+    padding: 40px 15px 0px 20px;
+  }
+
+.logo {
+    color: #000000;
+    font-weight: 800;
+    font-size: 1.8rem;
+    padding: 10px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 0.5rem;
+    padding: 15px;
+  }
+  
+  .button {
+    width: 30px;
+    height: 30px;
+    color:#000000
+  }
+
+  .icon-small {
+    font-size: 16px;
+  }
+  
+  .icon-medium {
+    font-size: 24px;
+  }
+  
+  .icon-big {
+    font-size: 32px;
+  }
+  
