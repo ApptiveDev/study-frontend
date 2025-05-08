@@ -8,56 +8,56 @@ const Ranking = () => {
       city: "부산광역시",
       views: 260_000_000,
       likes: 1230,
-      imageUrl: "public/images/images.jpg",
+      imageUrl: "/images/images.jpg",
     },
     {
       id: 2,
       city: "부산광역시",
       views: 260_000_000,
       likes: 1230,
-      imageUrl: "public/images/images.jpg",
+      imageUrl: "/images/images.jpg",
     },
     {
       id: 3,
       city: "부산광역시",
       views: 260_000_000,
       likes: 1230,
-      imageUrl: "public/images/images.jpg",
+      imageUrl: "/images/images.jpg",
     },
     {
       id: 4,
       city: "부산광역시",
       views: 260_000_000,
       likes: 1230,
-      imageUrl: "public/images/images.jpg",
+      imageUrl: "/images/images.jpg",
     },
     {
       id: 5,
       city: "부산광역시",
       views: 260_000_000,
       likes: 1230,
-      imageUrl: "public/images/images.jpg",
+      imageUrl: "/images/images.jpg",
     },
     {
       id: 6,
       city: "부산광역시",
       views: 260_000_000,
       likes: 1230,
-      imageUrl: "public/images/images.jpg",
+      imageUrl: "/images/images.jpg",
     },
     {
       id: 7,
       city: "부산광역시",
       views: 260_000_000,
       likes: 1230,
-      imageUrl: "public/images/images.jpg",
+      imageUrl: "/images/images.jpg",
     },
     {
       id: 8,
       city: "부산광역시",
       views: 260_000_000,
       likes: 1230,
-      imageUrl: "public/images/images.jpg",
+      imageUrl: "/images/images.jpg",
     },
   ];
 
@@ -68,8 +68,8 @@ const Ranking = () => {
   };
 
   const formatLikes = (likes) => {
-    return `${(likes / 1000).toFixed(1)}k`;
-  };
+    return likes > 1000 ? `${(likes / 1000).toFixed(1)}k` : likes;
+  }
 
   return (
     <div className="container">

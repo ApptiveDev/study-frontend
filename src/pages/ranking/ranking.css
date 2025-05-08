@@ -21,7 +21,7 @@
 
 .tab-buttons {
   display: flex;
-  background-color: #EEEEEE;
+  background-color: lightgray;
   justify-content: center;
   margin: 30px 20px 5px 20px;
   border-radius: 10px;
@@ -51,7 +51,7 @@
 .rank-item {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 14px;
   border-bottom: 1px solid #ccc;
 }
 

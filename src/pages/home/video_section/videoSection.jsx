@@ -32,25 +32,25 @@ function PopularVideos() {
         <button className="category-button">이슈</button>
       </div>
 
-      <div className="video-list">
+      <figure className="video-list">
         {videos.map((video) => (
           <div className="video-card" key={video.id}>
             <div
               className="video-image-container"
               style={{ backgroundImage: `url(${video.image})` }}
             >
-              <div className="video-info">
+              <figcaption className="video-info">
                 <div className="video-likes">
                   <span className="heart-icon">❤️</span>
                   <span>{video.likes}</span>
                 </div>
                 <div className="video-title-text">{video.title}</div>
                 <div className="video-views">{video.views}</div>
-              </div>
+              </figcaption>
             </div>
           </div>
         ))}
-      </div>
+      </figure>
     </div>
   );
 }
