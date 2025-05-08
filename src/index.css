@@ -1,120 +1,136 @@
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    background-color: #F1DFC5;
-  }
-
   .all {
-    width: 393px;
-    height: 852px;
-    transform: scale(calc(100vh / 852));
+    width: 100%;
+    height: 100%;
     transform-origin: top left;
     display: flex;
     flex-direction: column; 
-  }
-
-  header {
-    width: 100%;
-    height: 60px;
-    background-color: #FAEBD7;
-    display: flex;
-  }
-
-  .sitename {
-    width: 87px;
-    height: 22px;
-    margin-top: 19px;
-    margin-left: 20px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #7C6C56;
-  }
-
-  .headerboxes {
-    margin-left: auto;
-    margin-right: 20px;
-    margin-top: 15px;
-    display: flex;
-  }
-
-  .headerbox {
-    width: 30px;
-    height: 30px;
-    background-color: #DDC7AA;
-    margin-left: 10px;
-  }
-
-  main {
-    width: 100%;
-    height: calc(100% - 120px);
+    align-items: center;
+    padding: 0;
   }
 
   h1 {
-    width: 120px;
-    height: 72px;
-    margin-top: 60px;
-    margin-left: 20px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
-    font-size: 30px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #7C6C56;
+    margin-left: 15px;
+    width: 100%;
+    height: 50px;
+    background-color: #ffffff;
+    font-size: 15px;
+    font-weight: 400;
   }
 
-  .widgetboxes {
+  .ranking_select {
+    margin-left: 15px;
+    width: 95%;
+    height: 35px;
+    background-color: rgb(233, 233, 233);
+    border-radius: 7px;
+    padding: 2px;
+  }
+  
+  .ranking_weekly {
+    background-color: #ffffff;
+    border-radius: 7px;
+    border: none;
+    width: 49%;
+    height: 33px;
+    margin-left: 1px;
+    margin-top: 1px;
+  }
+
+  .ranking_total {
+    background-color: #ffffff;
+    border-radius: 7px;
+    border: none;
+    width: 49%;
+    height: 33px;
+    margin-left: 1.5%;
+    margin-top: 1px;
+  }
+
+  .rankings {
+    margin: 0 auto;
     width: 100%;
-    padding-left: 20px;
-    margin-top: 20px;
+    padding: 20px;
+    align-items: center;
     display: flex;
-    overflow-x: auto;
-    gap: 20px;
-    padding-bottom: 10px; 
-    padding-right: 20px; 
+    border-bottom: 0.1px solid gray;
   }
-  
-  .widgetbox {
-    width: 160px;
-    height: 90px;
-    background-color: #DDC7AA;
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
-    font-size: 30px;
-    line-height: 100%;
-    color: #7C6C56;
-    padding-top: 30px;
+
+  h2 {
+    width: 10%;
     text-align: center;
-    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: Arial, sans-serif;
+    padding-left: 15px;
   }
-  
+
+  img {
+    width: 55px;
+    border-radius: 100px;
+    border: 2px solid black;
+    margin-left: 20px;
+    margin-right: 20px; 
+  }
+
+  .city_info {
+    width: 50%;
+    margin-right: 45px;
+  }
+
+  .city {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .count {
+    font-size: 15px;
+  }
+
+  .heart_info {
+    align-items: center;
+    width: 20%;
+    padding-right: 40px;
+  }
+
+  .heart {
+    width: 100%;
+    font-size: 20px;
+    color: rgb(233, 60, 60);
+  }
+
+  .heart_num {
+    font-size: 13px;
+    text-align: center;
+  }
 
   nav {
+    overflow: hidden;
+    box-shadow: 0px -1px 5px lightgray;
     width: 100%;
-    height: 60px;
-    background-color: #FAEBD7;
-    display: flex;
+    height: 70px; 
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 
-  .navboxes {
-    margin-right: auto;
-    margin-left: 20px;
+  nav > div {
+    text-align: center;
+    float: left;
+    width: 25%;
+  
+    height: 45px;
+    line-height: 15px;
+  }
+
+  .nav {
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .icon {
+    font-size: 30px;
+    display: block;
+    margin: 0 auto;
     margin-top: 15px;
-    display: flex;
-  }
-
-  .navbox {
-    width: 30px;
-    height: 30px;
-    background-color: #DDC7AA;
-    margin-right: 77px;
   }
