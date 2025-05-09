@@ -12,13 +12,11 @@ const Stopwatch = () => {
   }
 
   const handleStop = () => {
-    // TODO 4: `intervalRef`를 사용하여 타이머를 중지하세요.
+    // TODO 5: `intervalRef`를 사용하여 타이머를 중지하세요.
   }
 
   let secondsPassed = 0;
-  if (startTime != null && now != null) {
-    // TODO4: `startTime`과 `now`가 null이 아닐 때만 경과 시간을 계산하세요.
-  }
+  // TODO4: `startTime`과 `now`가 null이 아닐 때만 경과 시간을 계산하세요.
 
   return (
     <>
