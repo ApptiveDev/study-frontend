@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react'
 
 const RankingSelector = () => {
   const [selected, setSelected] = useState('weekly');
@@ -10,19 +10,13 @@ const RankingSelector = () => {
       <button 
         className='ranking_weekly' 
         style={{ backgroundColor: selected === 'weekly' ? 'rgb(233, 233, 233)' : '#ffffff' }}
-        onClick={() => handleClick('total')}
-      >
-        주간 조회수 순위
-      </button>
+        onClick={() => handleClick('total')}>주간 조회수 순위</button>
       <button 
         className='ranking_total' 
         style={{ backgroundColor: selected === 'total' ? 'rgb(233, 233, 233)' : '#ffffff' }}
-        onClick={() => handleClick('weekly')}
-      >
-        누적 조회수 순위
-      </button>
+        onClick={() => handleClick('weekly')}>누적 조회수 순위</button>
     </div>
   );
 };
 
-export default RankingSelector;
+export default RankingSelector
