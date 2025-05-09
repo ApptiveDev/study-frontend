@@ -1,0 +1,23 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+.app-container{
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.title{
+  height: 24px;
+  text-align: center;
+  padding: 16px;
+}
+
+.rank-list{
+  flex-grow: 1;
+  overflow-y: auto;
+}

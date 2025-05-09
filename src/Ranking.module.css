@@ -1,0 +1,48 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.left{
+    display: flex;
+    gap: 22px;
+    align-items: center;
+}
+
+.left img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;/*그림을 원형으로*/
+    border: 2px solid black;
+}
+
+.local-view{
+    display: flex;
+    flex-direction: column;
+}
+
+.local{
+    font-weight: bold;
+}
+
+.view{
+    color: #807d7d;
+    font-weight: 500;
+}
+
+.right{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.right img{
+    width: 25px;
+    height: 25px;
+}
+
+.right span{
+    font-size: 13px;
+}
