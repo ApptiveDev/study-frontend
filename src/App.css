@@ -3,91 +3,21 @@ html, body, #root {
   margin: 0;
 }
 
-/* 컨테이너를 세로로 정렬 */
-.container {
+.app-container{
   display: flex;
+  margin: 0 auto;
   flex-direction: column;
   height: 100%;
+  padding: 0 16px;
 }
 
-/* header와 nav는 고정 높이 */
-.header {
-  height: 60px;
-  background-color: #faf2e0; 
-  display: flex; /*자식 요소들이 flex 항목으로*/
-  align-items: center; /* 세로 중앙 */
-  padding: 0 20px; /* 좌우 여백 */
-  justify-content: space-between; /* 텍스트와 박스를 양 끝에 배치 */
+.title{
+  height: 24px;
+  text-align: center;
+  padding: 16px;
 }
 
-.site-name {
-  font-size: 18px;
-  font-weight: bold;
-  color: #000;
-}
-
-/* 사각형 박스 3개를 오른쪽에 배치 */
-.boxes {
-  display: flex;/*자식요소들 가로로 정렬*/
-  gap: 10px; /* 자식 요소들간의 간격 */
-}
-
-.box {
-  width: 30px;
-  height: 30px;
-  background-color: #e0d8b0; 
-}
-
-.nav {
-  height: 60px;
-  background-color: #faf2e0; 
-  display: flex; /*자식 요소들이 flex 항목으로*/
-  align-items: center; /* 세로 중앙 */
-  padding: 0 20px; /* 좌우 여백 */
-}
-
-.nav-boxes {
-  display: flex;
-  gap: 60px; /* 자식 요소들간의 간격 */
-}
-
-.nav-box {
-  width: 30px;
-  height: 30px;
-  background-color: #e0d8b0; 
-  align-items: center;
-  justify-content: center;
-}
-
-/* content는 나머지 공간을 꽉 채움 */
-.content {
-  flex-grow: 1; /* 남은 공간을 모두 차지 */
-  background-color: #f8ebd0; 
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; /* 좌우 여백 */
-}
-
-/* 위젯 영역 */
-.widget-container {
-  width: 100%;
-  overflow-x: auto; /* 가로 스크롤 활성화 */
-  padding: 20px 0; /* 상하 여백 */
-  display: flex;
-}
-
-.widget {
-  display: flex;
-  gap: 10px; /* 박스 간격 */
-}
-
-.widget-box {
-  width: 60px;
-  height: 60px;
-  background-color: #e0d8b0; 
-  display: flex;
-  align-items: center;
-  justify-content: center; /*박스 안의 숫자 정렬*/
-  font-size: 18px;
-  color: #5c4b3d;
+.rank-list{
+  flex-grow: 1;
+  overflow-y: auto;
 }
