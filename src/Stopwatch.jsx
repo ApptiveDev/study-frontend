@@ -6,6 +6,9 @@ const Stopwatch = () => {
   const intervalRef = useRef(null);
 
   const handleStart = () => {
+    Date.now();
+    startTieme = Date.now();
+    // TODO1: 시작 시각을 설정하세요.
     // TODO1: 시작 시각과 현재 시각을 `Date.now()`로 설정하세요.
     // TODO2: `setInterval`을 사용하여 `now`가 10ms 주기로 업데이트 되도록 하세요.
     // TODO3: interval id는 `intervalRef`에 저장하여 렌더링을 방지합니다.
