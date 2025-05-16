@@ -1,38 +1,60 @@
-import { useState } from 'react'
-import './index.css';
+import React from 'react'
+import './App.css';
+import Header from './components/Header';
+import Nav from './components/Nav';
+
+const rankingList = [
+  { rank: 1, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
+  { rank: 2, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
+  { rank: 3, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
+  { rank: 4, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
+  { rank: 5, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
+  { rank: 6, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
+  { rank: 7, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
+  { rank: 8, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
+];
+
 function App() {
+
   return (
    
-    <div className='screen'>
+  <div className="app-container">
+    <Header />
+    <div className="ranking-screen">
 
-        <header className='header'>
-          <h1 className='logo'>SiteName</h1>
-          <div className='header-container'>
-            <div className='box'></div>
-            <div className='box'></div>
-            <div className='box'></div>
-          </div>
-        </header>
-
-        <main className='contents'>
-          <h2 className='text'>Hello<br />World!!!</h2>
-          <div className='widget-container'>
-            <div className='widget'><h2 className='text'>1</h2></div>
-            <div className='widget'><h2 className='text'>2</h2></div>
-            <div className='widget'><h2 className='text'>3</h2></div>
-            <div className='widget'><h2 className='text'>4</h2></div>
-            <div className='widget'><h2 className='text'>5</h2></div>
-          </div>
-        </main>
-
-      <nav className='navigation'>
-          <div className='box'></div>
-          <div className='box'></div>
-          <div className='box'></div>
-          <div className='box'></div>
-      </nav>
+    <div className="view">
+      <button className="active">주간 조회수 순위</button>
+      <button>누적 조회수 순위</button>
     </div>
+    <div className="list-container">
+    <ul className="ranking-list">
+      {rankingList.map(item => (
+        <li key={item.rank} className="ranking-item">
+          <span className="rank-number">{item.rank}</span>
+          <img
+              className="thumb"
+              src={item.img}
+              alt={`${item.name} 썸네일`}
+            />
+          <div className="info">
+            <strong>{item.name}</strong>
+            <small>조회수 {item.views}</small>
+          </div>
+          <div className="likes-container">
+          <img
+              className="icon-heart"
+              src="./public/heart.svg"
+          />
+          <small className="likes">{item.likes}</small>
+        </div>
+        </li>
+      ))}
+    </ul>
+    </div>
+    </div>
+    <Nav />
+  </div>
   )
-}
+};
 
 export default App

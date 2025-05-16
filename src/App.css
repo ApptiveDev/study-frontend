@@ -1,47 +1,120 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-.container {
+.app-container {
   display: flex;
-  
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
+
+.ranking-header {
+  position: relative;
+  padding: 16px;
+  text-align: center; 
+}
+.ranking-header .header-icon {
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.ranking-header .header-title {
+  margin: 0;
+  display: inline-block;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  border-top: 1px solid #ddd;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  font-size: 12px;
+  color: #555;
+}
+
+.nav .active {
+  color:#000;
+}
+
+
+.ranking-screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 16px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.view {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+  background: #ddd;
+  border-radius: 8px;
+  margin-left: 15px;
+}
+
+.view button {
+  flex: 1;
+  padding: 8px;
+  border: 3px solid #ddd;
+  border-radius: 8px;
+  background: #ddd;
+}
+
+.view .active {
+  background: #fff;
+}
+
+.list-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.ranking-list {
+  list-style: none;
+  padding: 8px;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.rank-number {
+  width: 24px;
+}
+
+.thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 12px;
+  border: 1px solid #000;
+}
+
+.info {
+  flex: 1;
+  display: flex; 
+  flex-direction: column;
+}
+.likes { 
+  margin-left: 8px; 
+}
+.likes-container { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  text-align: center; 
+  width: 60px; 
+}
+
