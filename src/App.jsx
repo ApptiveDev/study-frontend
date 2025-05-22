@@ -1,60 +1,127 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom/client';
 import './App.css';
-import Header from './components/Header';
-import Nav from './components/Nav';
-
-const rankingList = [
-  { rank: 1, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
-  { rank: 2, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
-  { rank: 3, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
-  { rank: 4, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
-  { rank: 5, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
-  { rank: 6, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
-  { rank: 7, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
-  { rank: 8, name: '부산광역시', views: '2억 6천만회', likes: '12.3k', img:'./public/busan.png' },
-];
 
 function App() {
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState('');
+  const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('todos');
+    if (saved) setTodos(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true;
+  });
+
+  const addTodo = (e) => {
+    if (e.key === 'Enter' && newTodo.trim()) {
+      setTodos([...todos, { id: Date.now(), title: newTodo.trim(), completed: false }]);
+      setNewTodo('');
+    }
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ));
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+  const clearCompleted = () => {
+    setTodos(todos.filter((todo) => !todo.completed));
+  };
+
+  const allCompleted = todos.length > 0 && todos.every(todo => todo.completed);
+  const toggleAll = () => {
+    const updated = todos.map(todo => ({ ...todo, completed: !allCompleted }));
+    setTodos(updated);
+  };
 
   return (
-   
-  <div className="app-container">
-    <Header />
-    <div className="ranking-screen">
-
-    <div className="view">
-      <button className="active">주간 조회수 순위</button>
-      <button>누적 조회수 순위</button>
-    </div>
-    <div className="list-container">
-    <ul className="ranking-list">
-      {rankingList.map(item => (
-        <li key={item.rank} className="ranking-item">
-          <span className="rank-number">{item.rank}</span>
-          <img
-              className="thumb"
-              src={item.img}
-              alt={`${item.name} 썸네일`}
+    <>
+      <section className="todoapp">
+        <header className="header">
+          <h1>todos</h1>
+          <div className="input-wrapper">
+            <button
+  className={`toggle-all ${allCompleted ? 'active' : ''}`}
+  onClick={toggleAll}
+>
+  ❯
+</button>
+            <input
+              className="new-todo"
+              placeholder="What needs to be done?"
+              value={newTodo}
+              onChange={(e) => setNewTodo(e.target.value)}
+              onKeyDown={addTodo}
+              autoFocus
             />
-          <div className="info">
-            <strong>{item.name}</strong>
-            <small>조회수 {item.views}</small>
           </div>
-          <div className="likes-container">
-          <img
-              className="icon-heart"
-              src="./public/heart.svg"
-          />
-          <small className="likes">{item.likes}</small>
-        </div>
-        </li>
-      ))}
-    </ul>
-    </div>
-    </div>
-    <Nav />
-  </div>
-  )
-};
+        </header>
 
-export default App
+        {todos.length > 0 && (
+          <section className="main">
+            <ul className="todo-list">
+              {filteredTodos.map((todo) => (
+                <li key={todo.id} className={todo.completed ? 'completed' : ''}>
+                  <div className="view">
+                    <input
+                      className="toggle"
+                      type="checkbox"
+                      checked={todo.completed}
+                      onChange={() => toggleTodo(todo.id)}
+                    />
+                    <label>{todo.title}</label>
+                    <button className="destroy" onClick={() => deleteTodo(todo.id)} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {todos.length > 0 && (
+          <footer className="footer">
+            <span className="todo-count">
+              <strong>{todos.filter((t) => !t.completed).length}</strong> item left
+            </span>
+            <ul className="filters">
+              <li><a href="#/" onClick={() => setFilter('all')} className={filter === 'all' ? 'selected' : ''}>All</a></li>
+              <li><a href="#/active" onClick={() => setFilter('active')} className={filter === 'active' ? 'selected' : ''}>Active</a></li>
+              <li><a href="#/completed" onClick={() => setFilter('completed')} className={filter === 'completed' ? 'selected' : ''}>Completed</a></li>
+            </ul>
+            <button
+              className="clear-completed"
+              style={{ visibility: todos.some(todo => todo.completed) ? 'visible' : 'hidden' }}
+              onClick={clearCompleted}
+            >
+              Clear completed
+            </button>
+          </footer>
+        )}
+      </section>
+
+      <p className="info">
+        Double-click to edit a todo<br />
+        Created by <a href="https://github.com/remojansen/">Remo H. Jansen</a><br />
+        Part of <a href="https://todomvc.com/">TodoMVC</a>
+      </p>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
