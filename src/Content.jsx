@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react'
 
 function Content(props) {
   const [inputValue, setInputValue] = useState('')
-  const [todos, setTodos] = useState(() => {
-    const saved = localStorage.getItem('todos')
-    return saved ? JSON.parse(saved) : []
-  })
+  const [todos, setTodos] = useState([])
   const [filter, setFilter] = useState('all')
 
   useEffect(() => {
@@ -13,7 +10,7 @@ function Content(props) {
   }, [todos])
 
   const handleAddTodo = () => {
-    if (inputValue.trim() !== '') {
+    if (inputValue !== '') {
       setTodos([...todos, { text: inputValue, completed: false }])
       setInputValue('')
     }
@@ -24,7 +21,7 @@ function Content(props) {
   }
 
   const toggleTodo = (index) => {
-    const newTodos = [...todos];
+    const newTodos = [...todos]
     newTodos[index].completed = !newTodos[index].completed
     setTodos(newTodos)
   }
