@@ -1,136 +1,115 @@
-  .all {
-    width: 100%;
-    height: 100%;
-    transform-origin: top left;
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    padding: 0;
-  }
+  body {
+  background: #f5f5f5;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  line-height: 23px;
+  min-width: 230px;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 0;
+}
 
-  h1 {
-    margin-left: 15px;
-    width: 100%;
-    height: 50px;
-    background-color: #ffffff;
-    font-size: 15px;
-    font-weight: 400;
-  }
+h1 {
+  font-size: 80px;
+  font-weight: 100;
+  text-align: center;
+  color: rgb(232, 211, 211);
+  margin: 50px 0 40px 0;
+}
 
-  .ranking_select {
-    margin-left: 15px;
-    width: 95%;
-    height: 35px;
-    background-color: rgb(233, 233, 233);
-    border-radius: 7px;
-    padding: 2px;
-  }
-  
-  .ranking_weekly {
-    background-color: #ffffff;
-    border-radius: 7px;
-    border: none;
-    width: 49%;
-    height: 33px;
-    margin-left: 1px;
-    margin-top: 1px;
-  }
+.todo-container {
+  background: white;
+  box-shadow: 0 2px 4px 0 rgb(190, 190, 190),
+              0 25px 50px 0 rgb(234, 234, 234);
+  padding: 0;
+  border-radius: 4px;
+}
 
-  .ranking_total {
-    background-color: #ffffff;
-    border-radius: 7px;
-    border: none;
-    width: 49%;
-    height: 33px;
-    margin-left: 1.5%;
-    margin-top: 1px;
-  }
+.input-area {
+  padding: 5px 25px;
+  border-bottom: 1px solid #ededed;
+  display: flex;
+  align-items: center;
+}
 
-  .rankings {
-    margin: 0 auto;
-    width: 100%;
-    padding: 20px;
-    align-items: center;
-    display: flex;
-    border-bottom: 0.1px solid gray;
-  }
+.input-area input {
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  outline: none;
+}
 
-  h2 {
-    width: 10%;
-    text-align: center;
-    font-size: 15px;
-    font-weight: 500;
-    font-family: Arial, sans-serif;
-    padding-left: 15px;
-  }
+.input-area input::placeholder {
+  color: #e2e2e2;
+  font-style: italic;
+}
 
-  img {
-    width: 55px;
-    border-radius: 100px;
-    border: 2px solid black;
-    margin-left: 20px;
-    margin-right: 20px; 
-  }
+ul.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-  .city_info {
-    width: 50%;
-    margin-right: 45px;
-  }
+ul.todo-list li {
+  font-size: 18px;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+}
 
-  .city {
-    font-size: 17px;
-    font-weight: 600;
-  }
+ul.todo-list li span {
+  margin-right: 10px;
+  cursor: pointer;
+}
 
-  .count {
-    font-size: 15px;
-  }
+ul.todo-list li button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: white
+}
 
-  .heart_info {
-    align-items: center;
-    width: 20%;
-    padding-right: 40px;
-  }
+ul.todo-list li:hover button {
+  color: #cc9a9a;
+}
 
-  .heart {
-    width: 100%;
-    font-size: 20px;
-    color: rgb(233, 60, 60);
-  }
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #797979;
+  background: #f9f9f9;
+  border-top: 1px solid #e6e6e6;
+}
 
-  .heart_num {
-    font-size: 13px;
-    text-align: center;
-  }
+.filters button {
+  margin: 0 4px;
+  padding: 3px 7px;
+  border: 1px solid transparent;
+  background: none;
+  color: #797979;
+  cursor: pointer;
+}
 
-  nav {
-    overflow: hidden;
-    box-shadow: 0px -1px 5px lightgray;
-    width: 100%;
-    height: 70px; 
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
+.filters button:hover {
+  border-color: rgb(245, 226, 226);
+}
 
-  nav > div {
-    text-align: center;
-    float: left;
-    width: 25%;
-  
-    height: 45px;
-    line-height: 15px;
-  }
+.filters button:focus {
+  border-color: rgb(245, 226, 226);
+}
 
-  .nav {
-    font-size: 10px;
-    font-weight: 500;
-  }
+.clearCompleted button {
+  color: #797979;
+  margin: 0 4px;
+  padding: 3px 7px;
+  border: 1px solid transparent;
+  background: none;
+}
 
-  .icon {
-    font-size: 30px;
-    display: block;
-    margin: 0 auto;
-    margin-top: 15px;
-  }
+.clearCompleted button:hover {
+  text-decoration: underline;
+}

@@ -4,7 +4,7 @@ function Header(props) {
   return (
     <>
         <header>
-            <h1 className="header">순위 상세 페이지</h1>
+            <h1 className="header">todos</h1>
         </header>
     </>
 )
