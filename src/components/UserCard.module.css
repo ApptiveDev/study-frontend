@@ -1,0 +1,85 @@
+.UserCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    width: 480px;
+    margin: 0 auto;
+    border: 1px solid #eee;
+}
+
+.header {
+    height: 70px;
+    background: no-repeat url("../assets/background_image.jpg");
+}
+
+.profileSection {
+    position: relative;
+    margin-top: -40px;
+    margin-left: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    background: #eee;
+    z-index: 1;
+}
+
+.statusDot {
+    position: absolute;
+    left: 60px;
+    bottom: 10px;
+    width: 16px;
+    height: 16px;
+    background: #2ecc40;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.infoSection {
+    padding: 0 24px 24px 24px;
+}
+
+.nameRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.name {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.role {
+    display: flex;
+    align-items: center;
+    color: #666;
+    font-size: 1rem;
+    margin-left: 8px;
+    gap: 4px;
+}
+
+.username {
+    color: #888;
+    font-size: 1rem;
+    margin-top: 2px;
+    margin-bottom: 12px;
+}
+
+.desc {
+    font-size: 1rem;
+    color: #222;
+    line-height: 1.5;
+}
