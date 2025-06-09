@@ -1,25 +1,26 @@
 .UserCard {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     overflow: hidden;
-    width: 480px;
+    width: 590px;
+    height: 320px;
     margin: 0 auto;
     border: 1px solid #eee;
 }
 
 .header {
-    height: 70px;
+    height: 120px;
     background: no-repeat url("../assets/background_image.jpg");
 }
 
 .profileSection {
     position: relative;
     margin-top: -40px;
-    margin-left: 24px;
+    margin-left: 10px;
     display: flex;
     align-items: center;
 }
@@ -65,7 +66,6 @@
 .role {
     display: flex;
     align-items: center;
-    color: #666;
     font-size: 1rem;
     margin-left: 8px;
     gap: 4px;
