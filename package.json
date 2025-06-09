@@ -1,33 +1,29 @@
 {
-  "name": "study-frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "my-react-app",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "serve": "vite preview"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.4.1",
-    "styled-components": "^6.1.16"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.23.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^8.2.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^15.15.0",
-    "vite": "^6.2.0"
-  }
+    "vite": "^4.0.0"
+  },
+  "description": "- 단일 책임 원칙: 하나의 컴포넌트는 한 가지 기능/목적을 가져야 함.\r - 재사용성: 공통되는 UI/로직은 분리해 재사용 가능하도록 설계.\r - 복잡도 관리: 복잡도가 너무 커지면 분할\r - 관심사 분리: 데이터 처리, UI 렌더링 등 관심사가 달라지면 분리",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ApptiveDev/study-frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ApptiveDev/study-frontend/issues"
+  },
+  "homepage": "https://github.com/ApptiveDev/study-frontend#readme"
 }

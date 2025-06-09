@@ -1,19 +1,43 @@
-import { Routes, Route } from "react-router-dom";
-import Home from "./pages/home/home";
-import Grid from "./pages/grid/grid";
-import Ranking from "./pages/";
-import Home2 from "./pages/home2/home2";
+import UserCard from "./components/UserCard";
 
-const App = () => {
+function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/grid" element={<Grid />} />
-      <Route path="/ranking" element={<Ranking />} />
-      <Route path="/home2" element={<Home2 />} />
-    </Routes>
+    <>
+      <header>
+        <h1
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "100px",
+          }}
+        >
+          프로필 목록
+        </h1>
+      </header>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          maxWidth: "1000px",
+          gap: "20px",
+          margin: "0 auto",
+        }}
+      >
+        <UserCard />
+        <UserCard />
+        <UserCard />
+        <UserCard />
+        <UserCard />
+        <UserCard />
+        <UserCard />
+        <UserCard />
+      </div>
+    </>
   );
-};
+}
 
 export default App;
