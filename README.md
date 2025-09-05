@@ -1,12 +1,21 @@
-# React + Vite
+# Context 실습
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 실습 내용
 
-Currently, two official plugins are available:
+1. pages/Home.jsx에는 Heading, Clock, Button 3개의 컴포넌트가 있습니다.
+2. ThemeContext를 생성해 다크모드와 라이트모드의 상태를 저장하고 변경할 수 있게 만들어주세요.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+<img width="1422" height="670" alt="스크린샷 2025-05-30 오후 2 33 48" src="https://github.com/user-attachments/assets/09fa1d88-f6ee-4c28-bc6a-916bb2ff41b3" />
+<img width="1426" height="664" alt="스크린샷 2025-05-30 오후 2 34 01" src="https://github.com/user-attachments/assets/ee6c8db6-905f-47e7-804c-c37740aa62dd" />
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+
+- 색상과 디자인은 자유롭게 변경해도 좋습니다.
+
+
+## 변경 해야 할 파일
+1. src/contexts/ThemeContext.jsx
+2. src/App.jsx
+3. src/components 내 모든 파일
+4. src/pages/Home.jsx
