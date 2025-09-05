@@ -1,5 +1,13 @@
 # Context 실습
 
+## 실행 방법
+
+```
+git clone https://github.com/ApptiveDev/study-frontend.git
+git checkout feat/theme
+npm i
+```
+
 ## 실습 내용
 
 1. pages/Home.jsx에는 Heading, Clock, Button 3개의 컴포넌트가 있습니다.
