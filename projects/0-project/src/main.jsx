@@ -5,43 +5,101 @@ import "./intro.css";
 function Introduction() {
   return (
     <div class="container">
-      <h1>✨ 자기소개 페이지 ✨</h1>
-      <h2>간단한 나의 정보 요약</h2>
-      <div class="info">
-        <div class="photo">
-          <img
-            src="https://img1.daumcdn.net/thumb/R1280x0.fwebp/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tNWE6ahM8L07uaj81q4HjFD6qrY"
-            alt="가나디"
-            width="200"
-          />
-        </div>
-        <div class="info_text">
-          <p>
-            <b>이름</b> : 김가연
-            <br />
-            <b>나이</b> : 21살
-            <br />
-            <b>학번</b> : 24학번
-            <br />
-            <b>직군</b> : 프론트엔드
-            <br />
-            <b>전공</b> : 정보컴퓨터공학부 컴퓨터공학과 💻
-            <br />
-            <b>e-mail</b> : kgy02269405@pusan.ac.kr
-            <br />
-            <br />
-            안녕하세요! 저는 앱티브 23기 프론트엔드 직군을 맡게 된 김가연입니다.
-            <br />
-            앞으로 열심히 스터디 참여하면서 많이 배우고 성장하고 싶습니다!
-            스터디원분들, 멘토님들 잘 부탁드립니다
-          </p>
-        </div>
+      <div class="header">
+        <h1>✨ 자기소개 페이지 ✨</h1>
       </div>
       <br />
+      <br />
+      <div class="info_goal">
+        {" "}
+        {/* 전체 컨텐츠 감싸는 div */}
+        <br />
+        <br />
+        <div class="info">
+          {" "}
+          {/* info 시작 */}
+          <div class="photo">
+            {" "}
+            {/* photo 시작 */}
+            <img
+              src="https://sdmntprukwest.oaiusercontent.com/files/00000000-e894-6243-b771-879253ed82e9/raw?se=2025-09-29T17%3A27%3A24Z&sp=r&sv=2024-08-04&sr=b&scid=ae10f349-df2e-575b-bacd-e572e49d723f&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-28T21%3A58%3A02Z&ske=2025-09-29T21%3A58%3A02Z&sks=b&skv=2024-08-04&sig=RxARcuIIFeIxoK%2BGRsyc96X5XVByHSC/saOmtRgDJTs%3D"
+              class="dog"
+              width="200"
+            />
+          </div>{" "}
+          {/* photo 끝 */}
+          <div class="info_text">
+            {" "}
+            {/* info_text 시작 */}
+            <p>
+              <b>이름</b> : 김가연
+              <br />
+              <b>나이</b> : 21살
+              <br />
+              <b>학번</b> : 24학번
+              <br />
+              <b>직군</b> : 프론트엔드
+              <br />
+              <b>전공</b> : 정보컴퓨터공학부 컴퓨터공학과 💻
+              <br />
+              <b>e-mail</b> : kgy02269405@pusan.ac.kr
+              <br />
+              <br />
+              <div class="sns">
+                {" "}
+                {/* sns 시작 */}
+                <a href="https://github.com/">
+                  <img
+                    class="git"
+                    src="https://img.icons8.com/?size=160&id=wqGmdISvpm0c&format=png"
+                  />
+                </a>
+                <a href="https://discord.com/channels/@me">
+                  <img
+                    class="discord"
+                    src="https://img.icons8.com/?size=160&id=mpmtUl2fgdLN&format=png"
+                  />
+                </a>
+                <a href="https://blog.naver.com/urqayeon">
+                  <img
+                    class="blog"
+                    src="https://img.icons8.com/?size=100&id=58240&format=png"
+                  />
+                </a>
+                <a href="https://www.instagram.com/">
+                  <img
+                    class="insta"
+                    src="https://img.icons8.com/?size=160&id=l9Yus8DgqCtB&format=png"
+                  />
+                </a>
+              </div>{" "}
+              {/* sns 끝 */}
+            </p>
+          </div>{" "}
+          {/* info_text 끝 */}
+        </div>{" "}
+        {/* info 끝 */}
+        <div class="goal">
+          <h3>&emsp;My Goal</h3>
+          <p>
+            - 계획 중인 프로젝트 열심히해서 성공적 마무리 <br />
+            - 프론트엔드 고수에 가까워지기
+            <br />
+            - 우즈 콘서트 갔다오기
+            <br />
+            - 친구들과 해외 여행 갔다오기
+            <br />- 학점 열심히 관리하기
+          </p>
+        </div>
+      </div>{" "}
+      {/* 전체 컨텐츠 감싸는 div 끝 */}
+      <br />
       <div class="music">
+        {" "}
+        {/* music 시작 */}
         <h3>
           &emsp;페이지가 좀 허전한 것 같아 저의 최애 앨범커버를 보여드립니다 🎵
-          🎶 🎼 🎹
+          🎶
         </h3>
         <img
           src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/976/703/82976703_1663118461097_1_600x600.JPG"
@@ -56,7 +114,8 @@ function Introduction() {
           width="200"
         />
         <img src="https://image.yes24.com/goods/101963403/XL" width="200" />
-      </div>
+      </div>{" "}
+      {/* music 끝 */}
     </div>
   );
 }
