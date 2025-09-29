@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Jua&family=Noto+Sans+KR:wght@100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500&family=Jua&family=Noto+Sans+KR:wght@100..900&family=Orbit&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #93c572;
+  font-family: "Jua", sans-serif;
+  font-weight: 400;
+}
+h2 {
+  color: #009899;
+  font-family: "Jua", sans-serif;
+  font-weight: 200;
+}
+h3 {
+  font-family: "Jua", sans-serif;
+  font-weight: 200;
+}
+.info {
+  background-color: #a5ae9d;
+  font-family: "Orbit", sans-serif;
+  display: inline-flex;
+}
+.music {
+  background-color: #a5ae9d;
+  width: 1018px;
+}
+
+.info_text {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.photo {
+  margin: auto;
+  margin-left: 20px;
+}
+
+.music img {
+  margin-right: 25px;
+  margin-left: 27px;
+  margin-bottom: 15px;
+}
