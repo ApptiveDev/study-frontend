@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./intro.css";
+import profile from "./profile.png";
 
 function Introduction() {
   return (
@@ -21,11 +22,7 @@ function Introduction() {
           <div class="photo">
             {" "}
             {/* photo 시작 */}
-            <img
-              src="https://sdmntprukwest.oaiusercontent.com/files/00000000-e894-6243-b771-879253ed82e9/raw?se=2025-09-29T17%3A27%3A24Z&sp=r&sv=2024-08-04&sr=b&scid=ae10f349-df2e-575b-bacd-e572e49d723f&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-28T21%3A58%3A02Z&ske=2025-09-29T21%3A58%3A02Z&sks=b&skv=2024-08-04&sig=RxARcuIIFeIxoK%2BGRsyc96X5XVByHSC/saOmtRgDJTs%3D"
-              class="dog"
-              width="200"
-            />
+            <img src={profile} className="profile" width="200" />
           </div>{" "}
           {/* photo 끝 */}
           <div class="info_text">
@@ -80,7 +77,7 @@ function Introduction() {
         </div>{" "}
         {/* info 끝 */}
         <div class="goal">
-          <h3>&emsp;My Goal</h3>
+          <h3>&emsp;My Goal 🌱</h3>
           <p>
             - 계획 중인 프로젝트 열심히해서 성공적 마무리 <br />
             - 프론트엔드 고수에 가까워지기
