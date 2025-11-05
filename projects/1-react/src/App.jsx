@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className="w-100 border rounded-xl overflow-hidden">
-      <div className="todo-list">
+      <div className="max-h-100 overflow-y-auto">
         {todos.length === 0 ? (
           <Placeholder />
         ) : (

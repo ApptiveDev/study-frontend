@@ -9,7 +9,7 @@ export default function TodoItem({ todo, onToggle, onDelete }) {
         onClick={() => onToggle(todo.id)}
       >
         <Checkbox className="mx-3" checked={todo.completed} />
-        <p className="flex-1 overflow-hidden break-keep text-ellipsis whitespace-nowrap">
+        <p className="flex-1 cursor-default overflow-hidden break-keep text-ellipsis whitespace-nowrap">
           {todo.text}
         </p>
       </div>
