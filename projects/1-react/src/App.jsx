@@ -4,10 +4,7 @@ import TodoItem from './components/item.jsx';
 import './index.css';
 
 function App() {
-  const [todos, setTodos] = useState([
-    { id: 1, text: 'React 공부하기', completed: false },
-    { id: 2, text: 'TODO List 만들기', completed: true },
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const addTodo = (text) => {
     const newTodo = {
