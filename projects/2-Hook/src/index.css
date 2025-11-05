@@ -1,0 +1,48 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-pretendard:
+    Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
+    'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    sans-serif;
+
+  --font-jetbrains-mono: 'JetBrains Mono', monospace;
+  --color-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  @apply box-border border-border;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+html,
+body,
+#root {
+  @apply h-full;
+}
+
+:root {
+  @apply bg-black text-white font-pretendard antialiased;
+
+  color-scheme: dark;
+}
+
+#root {
+  @apply flex-center flex-col;
+}
+
+.lucide {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1;
+}
+
+.lucide * {
+  vector-effect: non-scaling-stroke;
+}
