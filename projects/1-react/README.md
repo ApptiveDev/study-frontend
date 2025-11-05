@@ -1,16 +1,16 @@
-# React + Vite
+# 과제 1: Todo List 만들기
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Example](./.docs/example.gif)
 
-Currently, two official plugins are available:
+호영이는 할 일 목록을 기록하는 어플리케이션을 만들고 싶어합니다. 이 어플리케이션은 사용자가 할 일을 추가하고, 완료된 일을 체크하고, 삭제할 수 있는 기능을 제공합니다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[App.jsx](./src/App.jsx)를 수정해서 어플리케이션을 완성해 봅시다.
 
-## React Compiler
+## 조건
+- 할 일 추가, 완료, 삭제가 전부 동작해야 합니다.
+- 리스트가 비어 있을 때는 `<Placeholder />` 렌더링하여야 합니다.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 조사해보기
+- State 값에 따라 컴포넌트의 표시 여부를 조정할 수 있을까요? **조건부 렌더링**에 대해 알아봅시다.
+- State를 사용해서 `Array`를 다룰 때에는 무엇을 조심해야 할까요?
+- `Array`에 포함된 여러 개의 데이터를 어떻게 React 컴포넌트로 다룰 수 있을까요?

@@ -1,51 +1,30 @@
 import { useState } from 'react';
-import TodoInput from './components/input.jsx';
-import TodoItem from './components/item.jsx';
 import './index.css';
-import Placeholder from './components/placeholder.jsx';
+
+// 여기에 코드를 작성하세요
 
 function App() {
   const [todos, setTodos] = useState([]);
 
   function addTodo(text) {
-    const newTodo = {
-      id: Date.now(),
-      text,
-      completed: false,
-    };
-    setTodos([newTodo, ...todos]);
+    // 여기에 코드를 작성하세요
   }
 
   function toggleTodo(id) {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
+    // 여기에 코드를 작성하세요
   }
 
   function deleteTodo(id) {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    // 여기에 코드를 작성하세요
   }
 
   return (
     <div className="w-100 border rounded-xl overflow-hidden">
       <div className="max-h-100 overflow-y-auto">
-        {todos.length === 0 ? (
-          <Placeholder />
-        ) : (
-          todos.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              onToggle={toggleTodo}
-              onDelete={deleteTodo}
-            />
-          ))
-        )}
+        {/* 여기에 코드를 작성하세요 */}
       </div>
 
-      <TodoInput onAdd={addTodo} />
+      {/* 여기에 코드를 작성하세요 */}
     </div>
   );
 }
