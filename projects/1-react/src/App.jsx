@@ -2,61 +2,50 @@ import { useState } from 'react';
 import TodoInput from './components/input.jsx';
 import TodoItem from './components/item.jsx';
 import './index.css';
+import Placeholder from './components/placeholder.jsx';
 
 function App() {
   const [todos, setTodos] = useState([]);
 
-  const addTodo = (text) => {
+  function addTodo(text) {
     const newTodo = {
       id: Date.now(),
       text,
       completed: false,
     };
-    setTodos([...todos, newTodo]);
-  };
+    setTodos([newTodo, ...todos]);
+  }
 
-  const toggleTodo = (id) => {
+  function toggleTodo(id) {
     setTodos(
       todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo,
       ),
     );
-  };
+  }
 
-  const deleteTodo = (id) => {
+  function deleteTodo(id) {
     setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  const activeTodos = todos.filter((todo) => !todo.completed).length;
+  }
 
   return (
-    <div className="app-container">
-      <div className="todo-container">
-        <h1 className="title">📝 Todo List</h1>
-
-        <div className="stats">
-          <span>전체: {todos.length}</span>
-          <span>남은 할 일: {activeTodos}</span>
-          <span>완료: {todos.length - activeTodos}</span>
-        </div>
-
-        <TodoInput onAdd={addTodo} />
-
-        <div className="todo-list">
-          {todos.length === 0 ? (
-            <p className="empty-message">할 일이 없습니다! 🎉</p>
-          ) : (
-            todos.map((todo) => (
-              <TodoItem
-                key={todo.id}
-                todo={todo}
-                onToggle={toggleTodo}
-                onDelete={deleteTodo}
-              />
-            ))
-          )}
-        </div>
+    <div className="w-100 border rounded-xl overflow-hidden">
+      <div className="todo-list">
+        {todos.length === 0 ? (
+          <Placeholder />
+        ) : (
+          todos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onToggle={toggleTodo}
+              onDelete={deleteTodo}
+            />
+          ))
+        )}
       </div>
+
+      <TodoInput onAdd={addTodo} />
     </div>
   );
 }
