@@ -191,8 +191,9 @@ React에서 Input 요소를 다루는 방법에는 두 가지 주요 방식이 �
 
 ### Context API의 필요성
 
-![Props Drilling](./assets/drilling.png)<br/>
-<span style="color:gray">Props Drilling (출처: <a href="https://ko.react.dev/learn/passing-data-deeply-with-context">React 공식문서</a>)</span>
+![Props Drilling](./assets/drilling.png)
+
+> Props Drilling (출처: [React 공식문서](https://ko.react.dev/learn/passing-data-deeply-with-context))
 
 여러분이 컴포넌트를 많이 쌓으면 쌓을수록, Props를 통해 데이터를 전달하는 것이 점점 더 복잡해집니다.
 
@@ -247,7 +248,8 @@ function LikeButton({ postId }) {
 Post ID를 버튼에 전달하기 위해서 중간에 있는 모든 컴포넌트들을 거쳐야 합니다. 이처럼 불필요하게 많은 컴포넌트들이 Props를 전달하는 역할만 하게 되는 현상을 **Props Drilling**이라고 부릅니다. 이는 코드의 가독성을 떨어뜨리고 유지보수를 어렵게 만듭니다.
 
 [![영상: 리액트 코드짜는법](http://img.youtube.com/vi/3MB8DBXzEos/0.jpg)](https://youtu.be/3MB8DBXzEos)<br/>
-<span style="color:gray">영상: 리액트 코드짜는법 (YouTube)</span>
+
+> 영상: 리액트 코드짜는법 (YouTube)
 
 ### Context API의 개념
 
@@ -414,7 +416,8 @@ Context API는 전역 상태 관리 도구처럼 보일 수는 있지만, 실제
 
 ![시험 응시 시스템 헤더 예시](./assets/algo-example.png)<br/>
 ![시험 응시 시스템 헤더 예시](./assets/nm-example.png)<br/>
-<span style="color:gray">시험 응시 시스템 헤더 예시</span>
+
+> 시험 응시 시스템 헤더 예시
 
 이를 해결하기 위해, 우리는 컴포넌트 합성을 활용할 수 있습니다. 예를 들어, `Header` 컴포넌트를 만들고, 이 컴포넌트가 `children` prop을 통해 페이지 별로 다른 요소를 받아들이도록 할 수 있습니다.
 
