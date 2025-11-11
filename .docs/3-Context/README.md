@@ -145,22 +145,70 @@ Node.js에서 기본적으로 사용하는 패키지 매니저는 NPM (Node Pack
    corepack enable
    ```
 
+### React State로 Input 요소 다루기
+
+React에서 Input 요소를 다루는 방법에는 두 가지 주요 방식이 있습니다.
+
+1. **제어 컴포넌트 (Controlled Component)**: Input 요소의 값이 React State에 의해 제어되는 방식입니다. 사용자가 입력할 때마다 `onChange` 이벤트 핸들러를 통해 State를 업데이트합니다.
+
+   ```jsx
+   import { useState } from "react";
+
+   function ControlledInput() {
+     const [value, setValue] = useState("");
+
+     function handleChange(event) {
+       setValue(event.target.value);
+     }
+
+     return <input type="text" value={value} onChange={handleChange} />;
+   }
+   ```
+
+2. **비제어 컴포넌트 (Uncontrolled Component)**: Input 요소의 값이 DOM에 의해 관리되는 방식입니다. React State를 사용하지 않고, Form Event를 활용하여 값을 읽어옵니다.
+
+   ```jsx
+   import { useRef } from "react";
+
+   function UncontrolledInput() {
+     const inputRef = useRef(null);
+
+     function handleSubmit(event) {
+       event.preventDefault();
+       alert(`Input value: ${inputRef.current.value}`);
+     }
+
+     return (
+       <form onSubmit={handleSubmit}>
+         <input type="text" ref={inputRef} />
+         <button type="submit">Submit</button>
+       </form>
+     );
+   }
+   ```
+
 ## Context API란
 
 ### Context API의 필요성
+
+<figure style="width:100%;margin-left:0;margin-right:0;">
+    <img alt="Prop drilling" src="./assets/drilling.png" />
+    <figcaption style="color:gray">Props Drilling (출처: <a href="https://ko.react.dev/learn/passing-data-deeply-with-context">React 공식문서</a>)</figcaption>  
+</figure>
 
 여러분이 컴포넌트를 많이 쌓으면 쌓을수록, Props를 통해 데이터를 전달하는 것이 점점 더 복잡해집니다.
 
 하나의 Page를 구성한다고 생각해 봅시다.
 
-- Page
-  - Header
-    - UserMenu
-  - Content
-    - PostList
-      - PostItem
-        - LikeButton
-  - Footer
+```
+Page
+ ├── Header
+ ├── Content
+ │    └── PostList
+ │         └── PostItem
+ │              └── LikeButton
+ └── Footer
+```
 
 이 때, Page 컴포넌트에서 Post의 ID를 보유하고 있고, 이를 `LikeButton` 컴포넌트에서 사용해야 한다고 가정해 봅시다. 이 경우, `Post ID`를 `LikeButton` 컴포넌트에 전달하기 위해서는 다음과 같이 Props를 통해 데이터를 전달해야 합니다:
 
@@ -200,7 +248,7 @@ function LikeButton({ postId }) {
 
 Post ID를 버튼에 전달하기 위해서 중간에 있는 모든 컴포넌트들을 거쳐야 합니다. 이처럼 불필요하게 많은 컴포넌트들이 Props를 전달하는 역할만 하게 되는 현상을 **Props Drilling**이라고 부릅니다. 이는 코드의 가독성을 떨어뜨리고 유지보수를 어렵게 만듭니다.
 
-<figure>
+<figure style="width:100%;margin-left:0;margin-right:0;">
 <a href="https://youtu.be/3MB8DBXzEos">
 <img alt="영상: 리액트 코드짜는법" src="http://img.youtube.com/vi/3MB8DBXzEos/0.jpg" />
 </a>
@@ -209,7 +257,8 @@ Post ID를 버튼에 전달하기 위해서 중간에 있는 모든 컴포넌트
 
 ### Context API의 개념
 
-Context API는 리액트에서 전역적으로 데이터를 관리하고 전달할 수 있는 방법을 제공합니다. Context를 사용하면, 특정 데이터를 여러 컴포넌트에 걸쳐서 쉽게 공유할 수 있으며, Props Drilling 문제를 해결할 수 있습니다.
+Context API는 Prop drilling 문제를 해결하기 위해 React에서 제공하는 기능입니다.
+하나의 부모 컴포넌트에서 **트리 아래의 모든 자식 컴포넌트들**에 데이터를 전달할 수 있도록 해줍니다. 이를 통해 중간 컴포넌트들이 Props를 전달하는 역할을 하지 않아도 됩니다.
 
 Context는 두 가지 주요 컴포넌트로 구성됩니다:
 
@@ -218,7 +267,28 @@ Context는 두 가지 주요 컴포넌트로 구성됩니다:
 
 ### 실습: Context API 사용하기
 
-다크 모드를 구현하는 예제를 통해 Context API를 사용하는 방법을 알아봅시다.
+다크 모드 기능은 2020년 이후로 많은 웹사이트에서 기본적으로 제공되는 기능이 되었습니다.
+이를 구현하기 위해 최상위 컴포넌트에서 `isDarkMode` 상태를 관리한다고 가정합시다.
+
+```jsx
+import React, { useState } from "react";
+
+function App() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  function toggleTheme() {
+    setIsDarkMode((prevMode) => !prevMode);
+  }
+
+  return (
+    <div className={isDarkMode ? "dark-mode" : "light-mode"}>
+      <MyComponent isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+    </div>
+  );
+}
+```
+
+이 때, 모든 컴포넌트에 `isDarkMode`와 `toggleTheme`를 Props로만 전달해야 한다면 정말 극단적인 Prop drilling이 발생할 것입니다. 이를 해결하기 위해 Context API를 사용해 봅시다.
 
 ```jsx
 // theme.jsx
@@ -332,8 +402,162 @@ Context API는 전역 상태 관리 도구처럼 보일 수는 있지만, 실제
 
 ## 컴포넌트 합성
 
-## 과제
+컴포넌트 합성(Component Composition)은 리액트에서 컴포넌트를 재사용하고 조합하는 방법을 의미합니다. 컴포넌트 합성을 통해 복잡한 UI를 더 작은 단위의 컴포넌트로 나누고, 이를 조합하여 전체 UI를 구성할 수 있습니다.
 
+웹 어플리케이션의 헤더를 구성하면서, 페이지 별로 표시되는 요소가 약간씩 달라지는 상황이 발생한다고 가정해 봅시다. 제가 개발했던 시험 응시 시스템에서는, 알고리즘 시험에서는 코드 제출 버튼이 상단에 표시되어야 하고, 일반 시험에서는 관련 기능이 없었습니다.
+
+<figure style="width:100%;margin-left:0;margin-right:0;">
+    <img alt="시험 응시 시스템 헤더 예시" src="./assets/algo-example.png" />
+    <img alt="시험 응시 시스템 헤더 예시" src="./assets/nm-example.png" />
+    <figcaption style="color:gray">알고리즘 시험 화면에는 제출 버튼이 존재한다.</figcaption>  
+</figure>
+
+이를 해결하기 위해, 우리는 컴포넌트 합성을 활용할 수 있습니다. 예를 들어, `Header` 컴포넌트를 만들고, 이 컴포넌트가 `children` prop을 통해 페이지 별로 다른 요소를 받아들이도록 할 수 있습니다.
+
+```jsx
+export function Header({
+  children,
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <header
+      {...props}
+      className={cn(
+        "items-center bg-sidebar border-b border-sidebar-border flex h-[48px]",
+        !focused && "text-muted-foreground",
+        className
+      )}
+    >
+      {children}
+    </header>
+  );
+}
 ```
 
+그리고 모든 페이지에 공통적으로 사용되는 헤더 컴포넌트를 다음과 같이 작성할 수 있습니다:
+
+```jsx
+export function HeaderSide({
+  children,
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn("flex-1 flex self-stretch items-center", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function HeaderTitle() {
+  return; // ...;
+}
+
+export function HeaderTimer() {
+  return; // ...;
+}
+
+export function HeaderExitButton() {
+  return; // ...;
+}
+
+export function HeaderWindowControls() {
+  return; // ...;
+}
 ```
+
+마지막으로, 각 페이지에서 헤더를 다음과 같이 조합하여 사용할 수 있습니다:
+
+```jsx
+<Header>
+  <HeaderTitle />
+
+  <HeaderTimer />
+  <HeaderExitButton />
+
+  <HeaderSide className="justify-end">
+    <AlgorithmToolbar /> {/* 알고리즘 화면 전용 툴바 */}
+    <HeaderWindowControls className="self-stretch w-[144px]" />
+  </HeaderSide>
+</Header>
+```
+
+### 컴포넌트 합성의 장점
+
+컴포넌트 합성을 사용하면 **컴포넌트의 재사용성을 극대화**시킬 수 있습니다. 동일한 레이아웃, 동일한 컴포넌트를 여러 페이지에서 사용하면서도, 페이지별로 다른 요소를 쉽게 추가하거나 변경할 수 있습니다.
+
+또한 트리 구조를 명확하게 노출하기 때문에, 코드의 가독성이 향상되고 유지보수가 용이해집니다. 아래의 코드는 컴포넌트 위의 Header가 사용된 프로젝트의 예시입니다:
+
+![컴포넌트 합성](./assets/composition.png)
+
+```jsx
+// 실제 프로젝트에서 사용한 코드를 그대로 발췌했습니다.
+<CodeProblemProvider
+  index={index}
+  problem={problem}
+  language={loaderData.language}
+>
+  <CodeJudgeProvider>
+    <Header>
+      <HeaderTitle />
+
+      <HeaderTimer />
+      <HeaderExitButton />
+
+      <HeaderSide className="justify-end">
+        <AlgorithmToolbar />
+        <WindowControls className="self-stretch w-[144px]" />
+      </HeaderSide>
+    </Header>
+
+    <Body />
+
+    <Footer>
+      <FooterProfile />
+      <FooterConnection />
+      <div className="flex-1" /> {/* 푸터 중앙 공백 */}
+      <AlgorithmFooterProgress />
+      <AlgorithmFooterReset />
+      <FooterSettings />
+    </Footer>
+  </CodeJudgeProvider>
+</CodeProblemProvider>
+```
+
+여러분이 React에 아직 숙련되지 않았다 하더라도, 위와 같은 구조를 통해
+사용된 컴포넌트의 코드를 일일이 살펴보지 않더라도, 전체적인 레이아웃과 구조가 한눈에 들어옵니다.
+
+### 컴포넌트 합성이 Context API보다 권장되나요?
+
+오래된 버전의 React 공식 문서에서는 이러한 설명이 있었습니다.
+
+> **여러 레벨에 걸쳐 props 넘기는 걸 대체하는 데에 context보다 [컴포넌트 합성](https://ko.legacy.reactjs.org/docs/composition-vs-inheritance.html)이 더 간단한 해결책일 수도 있습니다.**
+
+그러나 최신 버전의 React 공식 문서에서는 이러한 설명이 사라졌습니다. 컴포넌트 합성과 Context API는 서로 보완적인 개념이며, 상황에 따라 적절히 선택하여 사용하는 것이 중요합니다.
+
+위에서 제가 제공한 예제에서도 복잡한 Code Editor의 상태를 관리하기 위한 `CodeProblemProvider`와 `CodeJudgeProvider`을 Context API로 구현하여 사용하고 있었습니다.
+
+아래는 현재 React 진영에서 가장 사랑받는 Component 라이브러리인 `shadcn/ui`의 [`Dialog`](https://ui.shadcn.com/docs/components/dialog) 컴포넌트의 사용 에시입니다:
+
+```jsx
+<Dialog>
+  <DialogTrigger>Open</DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you absolutely sure?</DialogTitle>
+      <DialogDescription>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+```
+
+이 예제에서는 `Dialog` 컴포넌트가 Context Provider 역할을 하며, 다이얼로그 창의 상태를 관리합니다. `DialogTrigger`, `DialogContent`, `DialogHeader` 등은 Context Consumer 역할을 하여, 다이얼로그의 상태에 접근하고 조작할 수 있습니다.
+
+또한 모든 컴포넌트를 조합하여 사용할 수 있도록 설계되어 있어, 컴포넌트 합성의 장점도 함께 누릴 수 있습니다. 이처럼 Context API와 컴포넌트 합성은 서로 보완적인 개념으로, 상황에 따라 적절히 선택하여 사용하는 것이 중요합니다.
