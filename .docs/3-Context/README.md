@@ -398,6 +398,18 @@ Context API는 전역 상태 관리 도구처럼 보일 수는 있지만, 실제
 - React로만 제작하는 어플리케이션의 Entrypoint는 사실상 React 함수형 컴포넌트입니다.
 - 최상위 컴포넌트를 Context Provider로 감싸면, 어플리케이션 전체에서 Context 값을 사용할 수 있습니다.
 
+  ```jsx
+  function App() {
+    return (
+      <ThemeProvider>
+        <MainApp /> {/* 어플리케이션 전체 */}
+      </ThemeProvider>
+    );
+  }
+
+  document.getElementById("root").render(<App />);
+  ```
+
 따라서, 우리가 진행할 프로젝트에서는 Redux와 같은 별도의 전역 상태 관리 도구를 사용하지 않고, Context API를 활용하여 전역 상태를 관리할 것입니다.
 
 ## 컴포넌트 합성
