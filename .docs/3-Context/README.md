@@ -540,13 +540,39 @@ export function HeaderWindowControls() {
 
 ### 컴포넌트 합성이 Context API보다 권장되나요?
 
-오래된 버전의 React 공식 문서에서는 이러한 설명이 있었습니다.
+React의 Context 공식 문서에는 다음과 같이 설명되어 있습니다:
 
-> **여러 레벨에 걸쳐 props 넘기는 걸 대체하는 데에 context보다 [컴포넌트 합성](https://ko.legacy.reactjs.org/docs/composition-vs-inheritance.html)이 더 간단한 해결책일 수도 있습니다.**
+> **여러 레벨에 걸쳐 props 넘기는 걸 대체하는 데에 context보다 [JSX를 children으로 전달하는 것](https://ko.react.dev/learn/passing-props-to-a-component#passing-jsx-as-children)이 더 간단한 해결책일 수도 있습니다.**
 
-그러나 최신 버전의 React 공식 문서에서는 이러한 설명이 사라졌습니다. 컴포넌트 합성과 Context API는 서로 보완적인 개념이며, 상황에 따라 적절히 선택하여 사용하는 것이 중요합니다.
+이 말은 Context API가 Props Drilling 문제를 해결하는 데에 유용할 수는 있지만, 모든 상황에서 최선의 선택은 아니라는 뜻입니다. 가령 스타일만 적용한 간단한 Layout 아래에 부모 컴포넌트의 Props를 전달하는 경우라면, Context API보다는 컴포넌트 합성을 사용하는 것이 더 간단하고 명확할 수 있습니다.
 
-위에서 제가 제공한 예제에서도 복잡한 Code Editor의 상태를 관리하기 위한 `CodeProblemProvider`와 `CodeJudgeProvider`을 Context API로 구현하여 사용하고 있었습니다.
+```jsx
+// 복잡한 Layout 컴포넌트
+function Layout({ children }) {
+  return (
+    <div className="layout">
+      <header>My Header</header>
+      {children}
+      <footer>My Footer</footer>
+    </div>
+  );
+}
+
+// Layout을 사용하면서, Layout 아래에 Post 데이터를 쉽게 전달할 수 있다.
+function App() {
+  const post = getPost();
+  return (
+    <Layout>
+      <main>
+        <h1>{post.title}</h1>
+        <p>{post.content}</p>
+      </main>
+    </Layout>
+  );
+}
+```
+
+하지만 컴포넌트 합성과 Context API는 서로 보완적인 개념이며, 상황에 따라 적절히 선택하여 사용하는 것이 중요합니다. 위에서 제가 제공한 예제에서도 복잡한 Code Editor의 상태를 관리하기 위한 `CodeProblemProvider`와 `CodeJudgeProvider`을 Context API로 구현하여 사용하고 있었습니다.
 
 아래는 현재 React 진영에서 가장 사랑받는 Component 라이브러리인 `shadcn/ui`의 [`Dialog`](https://ui.shadcn.com/docs/components/dialog) 컴포넌트의 사용 에시입니다:
 
@@ -565,6 +591,6 @@ export function HeaderWindowControls() {
 </Dialog>
 ```
 
-이 예제에서는 `Dialog` 컴포넌트가 Context Provider 역할을 하며, 다이얼로그 창의 상태를 관리합니다. `DialogTrigger`, `DialogContent`, `DialogHeader` 등은 Context Consumer 역할을 하여, 다이얼로그의 상태에 접근하고 조작할 수 있습니다.
+이 예제에서는 `Dialog` 컴포넌트가 Context Provider 역할을 하며, 다이얼로그 창의 상태를 관리합니다. `DialogTrigger`, `DialogContent`, `DialogHeader` 등은 Context Consumer 역할을 하여, 다이얼로그의 상태에 접근하고 조작할 수 있습니다. 이는 Dialogue 컴포넌트의 상태 관리 로직을 **Provider을 사용하여 캡슐화**하면서도, 컴포넌트를 자유롭게 조합할 수 있도록 하는 좋은 예시입니다.
 
-또한 모든 컴포넌트를 조합하여 사용할 수 있도록 설계되어 있어, 컴포넌트 합성의 장점도 함께 누릴 수 있습니다. 이처럼 Context API와 컴포넌트 합성은 서로 보완적인 개념으로, 상황에 따라 적절히 선택하여 사용하는 것이 중요합니다.
+중요한 것은 코드의 가독성과 유지보수성을 높이고, 가장 쉽게 문제를 해결할 수 있는 적합한 도구를 선택하는 것입니다. 그것이 여러분의 **개발력**을 향상시키는 길입니다.
