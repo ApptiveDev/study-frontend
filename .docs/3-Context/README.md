@@ -191,10 +191,8 @@ React에서 Input 요소를 다루는 방법에는 두 가지 주요 방식이 �
 
 ### Context API의 필요성
 
-<figure style="width:100%;margin-left:0;margin-right:0;">
-    <img alt="Prop drilling" src="./assets/drilling.png" />
-    <figcaption style="color:gray">Props Drilling (출처: <a href="https://ko.react.dev/learn/passing-data-deeply-with-context">React 공식문서</a>)</figcaption>  
-</figure>
+![Props Drilling](./assets/drilling.png)<br/>
+<span style="color:gray">Props Drilling (출처: <a href="https://ko.react.dev/learn/passing-data-deeply-with-context">React 공식문서</a>)</span>
 
 여러분이 컴포넌트를 많이 쌓으면 쌓을수록, Props를 통해 데이터를 전달하는 것이 점점 더 복잡해집니다.
 
@@ -248,12 +246,8 @@ function LikeButton({ postId }) {
 
 Post ID를 버튼에 전달하기 위해서 중간에 있는 모든 컴포넌트들을 거쳐야 합니다. 이처럼 불필요하게 많은 컴포넌트들이 Props를 전달하는 역할만 하게 되는 현상을 **Props Drilling**이라고 부릅니다. 이는 코드의 가독성을 떨어뜨리고 유지보수를 어렵게 만듭니다.
 
-<figure style="width:100%;margin-left:0;margin-right:0;">
-<a href="https://youtu.be/3MB8DBXzEos">
-<img alt="영상: 리액트 코드짜는법" src="http://img.youtube.com/vi/3MB8DBXzEos/0.jpg" />
-</a>
-<figcaption style="color:gray">영상: 리액트 코드짜는법</figcaption>
-</figure>
+[![영상: 리액트 코드짜는법](http://img.youtube.com/vi/3MB8DBXzEos/0.jpg)](https://youtu.be/3MB8DBXzEos)<br/>
+<span style="color:gray">영상: 리액트 코드짜는법 (YouTube)</span>
 
 ### Context API의 개념
 
@@ -418,11 +412,9 @@ Context API는 전역 상태 관리 도구처럼 보일 수는 있지만, 실제
 
 웹 어플리케이션의 헤더를 구성하면서, 페이지 별로 표시되는 요소가 약간씩 달라지는 상황이 발생한다고 가정해 봅시다. 제가 개발했던 시험 응시 시스템에서는, 알고리즘 시험에서는 코드 제출 버튼이 상단에 표시되어야 하고, 일반 시험에서는 관련 기능이 없었습니다.
 
-<figure style="width:100%;margin-left:0;margin-right:0;">
-    <img alt="시험 응시 시스템 헤더 예시" src="./assets/algo-example.png" />
-    <img alt="시험 응시 시스템 헤더 예시" src="./assets/nm-example.png" />
-    <figcaption style="color:gray">알고리즘 시험 화면에는 제출 버튼이 존재한다.</figcaption>  
-</figure>
+![시험 응시 시스템 헤더 예시](./assets/algo-example.png)<br/>
+![시험 응시 시스템 헤더 예시](./assets/nm-example.png)<br/>
+<span style="color:gray">시험 응시 시스템 헤더 예시</span>
 
 이를 해결하기 위해, 우리는 컴포넌트 합성을 활용할 수 있습니다. 예를 들어, `Header` 컴포넌트를 만들고, 이 컴포넌트가 `children` prop을 통해 페이지 별로 다른 요소를 받아들이도록 할 수 있습니다.
 
