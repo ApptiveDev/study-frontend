@@ -1,31 +1,18 @@
-import { useState } from 'react';
+import EditorButtons from './components/editor/buttons';
+import EditorContent from './components/editor/content';
+import EditorTitle from './components/editor/title';
+import { EditorProvider } from './lib/providers/editor';
 import './index.css';
 
-// 여기에 코드를 작성하세요
-
 function App() {
-  const [todos, setTodos] = useState([]);
-
-  function addTodo(text) {
-    // 여기에 코드를 작성하세요
-  }
-
-  function toggleTodo(id) {
-    // 여기에 코드를 작성하세요
-  }
-
-  function deleteTodo(id) {
-    // 여기에 코드를 작성하세요
-  }
-
   return (
-    <div className="w-100 border rounded-xl overflow-hidden">
-      <div className="max-h-100 overflow-y-auto">
-        {/* 여기에 코드를 작성하세요 */}
+    <EditorProvider>
+      <EditorButtons />
+      <div>
+        <EditorTitle />
+        <EditorContent />
       </div>
-
-      {/* 여기에 코드를 작성하세요 */}
-    </div>
+    </EditorProvider>
   );
 }
 
