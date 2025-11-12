@@ -21,7 +21,8 @@ function App() {
       todos.map((todo) =>
         todo.id === id ? {
           ...todo,
-          completed: !todo.completed} : todo
+          completed: !todo.completed
+        } : todo
       )
     )
   }
@@ -38,7 +39,6 @@ function App() {
         ):(
           todos.map((todo) => (
             <TodoItem
-              key={todo.id}
               todo={todo}
               onToggle={toggleTodo}
               onDelete={deleteTodo}
