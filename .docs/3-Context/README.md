@@ -145,7 +145,7 @@ Node.js에서 기본적으로 사용하는 패키지 매니저는 NPM (Node Pack
    corepack enable
    ```
 
-### React State로 Input 요소 다루기
+### 6. React State로 Input 요소 다루기
 
 React에서 Input 요소를 다루는 방법에는 두 가지 주요 방식이 있습니다.
 
@@ -187,7 +187,7 @@ React에서 Input 요소를 다루는 방법에는 두 가지 주요 방식이 �
    }
    ```
 
-## Context API란
+## Context API를 활용한 상태 관리
 
 ### Context API의 필요성
 
@@ -245,7 +245,7 @@ function LikeButton({ postId }) {
 }
 ```
 
-Post ID를 버튼에 전달하기 위해서 중간에 있는 모든 컴포넌트들을 거쳐야 합니다. 이처럼 불필요하게 많은 컴포넌트들이 Props를 전달하는 역할만 하게 되는 현상을 **Props Drilling**이라고 부릅니다. 이는 코드의 가독성을 떨어뜨리고 유지보수를 어렵게 만듭니다.
+Post ID를 버튼에 전달하기 위해서 중간에 있는 모든 컴포넌트들을 거쳐야 합니다. 이처럼 불필요하게 많은 컴포넌트들이 Props를 전달하는 역할만 하게 되는 현상을 **Prop drilling**이라고 부릅니다. 이는 코드의 가독성을 떨어뜨리고 유지보수를 어렵게 만듭니다.
 
 [![영상: 리액트 코드짜는법](http://img.youtube.com/vi/3MB8DBXzEos/0.jpg)](https://youtu.be/3MB8DBXzEos)<br/>
 
@@ -327,7 +327,7 @@ export function useTheme() {
 
 1. `createContext`를 사용하여 `ThemeContext`를 생성했습니다.
    ```jsx
-   const context = useContext(ThemeContext);
+   const ThemeContext = createContext();
    ```
 2. `ThemeProvider` 컴포넌트를 만들어, `isDarkMode` 상태와 `toggleTheme` 함수를 Context의 값으로 제공했습니다.
 
@@ -431,7 +431,7 @@ export function Header({
     <header
       {...props}
       className={cn(
-        "items-center bg-sidebar border-b border-sidebar-border flex h-[48px]",
+        "items-center bg-sidebar border-b border-sidebar-border flex h-12",
         !focused && "text-muted-foreground",
         className
       )}
@@ -488,7 +488,7 @@ export function HeaderWindowControls() {
 
   <HeaderSide className="justify-end">
     <AlgorithmToolbar /> {/* 알고리즘 화면 전용 툴바 */}
-    <HeaderWindowControls className="self-stretch w-[144px]" />
+    <HeaderWindowControls className="self-stretch w-36" />
   </HeaderSide>
 </Header>
 ```
@@ -517,7 +517,7 @@ export function HeaderWindowControls() {
 
       <HeaderSide className="justify-end">
         <AlgorithmToolbar />
-        <WindowControls className="self-stretch w-[144px]" />
+        <WindowControls className="self-stretch w-36" />
       </HeaderSide>
     </Header>
 
