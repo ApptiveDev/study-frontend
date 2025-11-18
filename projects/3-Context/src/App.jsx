@@ -7,10 +7,12 @@ import './index.css';
 function App() {
   return (
     <EditorProvider>
-      <EditorButtons />
-      <div>
-        <EditorTitle />
-        <EditorContent />
+      <div className="w-[80%] max-w-lg flex flex-col gap-4">
+        <EditorButtons />
+        <div>
+          <EditorTitle className="rounded-b-none border-b-0" />
+          <EditorContent className="rounded-t-none" />
+        </div>
       </div>
     </EditorProvider>
   );

@@ -9,7 +9,9 @@
 }
 
 @utility flex-center {
-  @apply flex items-center justify-center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 html,
@@ -27,8 +29,6 @@ body,
 }
 
 .lucide {
-  width: 24px;
-  height: 24px;
   stroke-width: 1;
 }
 

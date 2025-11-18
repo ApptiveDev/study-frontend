@@ -2,8 +2,22 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
+function getInitialTheme() {
+  const browserTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+
+  const theme = sessionStorage.getItem('theme');
+  return theme ?? browserTheme;
+}
+
 export function ThemeProvider({ children }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkModePrimitive] = useState(getInitialTheme);
+
+  function setIsDarkMode(value) {
+    sessionStorage.setItem('theme', value ? 'dark' : 'light');
+    setIsDarkModePrimitive(value);
+  }
 
   useEffect(() => {
     const classList = document.documentElement.classList;
@@ -15,7 +29,7 @@ export function ThemeProvider({ children }) {
   }, [isDarkMode]);
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, setIsDarkMode }}>
+    <ThemeContext.Provider value={[isDarkMode, setIsDarkMode]}>
       {children}
     </ThemeContext.Provider>
   );

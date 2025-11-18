@@ -8,7 +8,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
       <App />
-      <p className="text-destructive-foreground mt-2 text-sm">
+      <p className="text-muted-foreground mt-3 text-sm">
         by APPTIVE Frontend Team
       </p>
     </ThemeProvider>
