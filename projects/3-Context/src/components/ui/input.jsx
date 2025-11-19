@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utilities/shadcn';
+import { cn } from '../../lib/utilities/shadcn';
 
 function Input({ className, type, ...props }) {
   return (

@@ -2,20 +2,24 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
+function getInitialTheme() {
+  // 이 코드를 수정하세요.
+  return "dark";
+}
+
 export function ThemeProvider({ children }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkModePrimitive] = useState(getInitialTheme);
+
+  function setIsDarkMode(value) {
+    // 이 코드를 수정하세요.
+  }
 
   useEffect(() => {
-    const classList = document.documentElement.classList;
-    if (isDarkMode) {
-      classList.add('dark');
-    } else {
-      classList.remove('dark');
-    }
+    // 이 코드를 수정하세요.
   }, [isDarkMode]);
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, setIsDarkMode }}>
+    <ThemeContext.Provider value={[isDarkMode, setIsDarkMode]}>
       {children}
     </ThemeContext.Provider>
   );
