@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '../ui/select';
 import { useTheme } from '../../lib/providers/theme';
+import { useEditor } from '../../lib/providers/editor';
 
 export default function EditorButtons() {
   return (
@@ -48,12 +49,14 @@ function ThemeSelector() {
 }
 
 function PublishButton() {
+  const { title, content } = useEditor();
+
   return (
     <ButtonGroup>
-      <Button>
+      <Button onClick={() => alert(`제목: ${title}\n본문: ${content}`)}>
         <CloudUploadIcon /> 게시하기
       </Button>
-      <Button className="px-2">
+      <Button className="px-2!">
         <ChevronDownIcon />
       </Button>
     </ButtonGroup>
