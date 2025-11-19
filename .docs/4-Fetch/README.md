@@ -252,6 +252,7 @@ HTML 문서를 로드한 웹 브라우저는 `<link>`, `<script>`, `<img>` 태�
 ### 동적 웹 서버
 
 ![인터넷 뱅킹 서비스](./assets/bank.jpeg)
+
 > 출처: IBK 기업은행
 
 ```php
@@ -273,11 +274,12 @@ HTML 문서를 로드한 웹 브라우저는 `<link>`, `<script>`, `<img>` 태�
 웹 서버에서 원격으로 구동하는 사용자 어플리케이션입니다. 사용자는 웹 브라우저를 통해
 웹 어플리케이션에 접속하여, 마치 데스크톱 어플리케이션처럼 다양한 기능을 사용할 수 있습니다.
 
-웹 어플리케이션의 예시로는 이메일 서비스(Gmail), 소셜 미디어(Facebook), 온라인 쇼핑몰(Amazon) 등이 있습니다. 이러한 서비스들의 등장으로 웹 생태계는 단순한 정보 제공을 넘어, 복잡한 상호작용이 가능한 플랫폼으로 진화하게 되었습니다. 
+웹 어플리케이션의 예시로는 이메일 서비스(Gmail), 소셜 미디어(Facebook), 온라인 쇼핑몰(Amazon) 등이 있습니다. 이러한 서비스들의 등장으로 웹 생태계는 단순한 정보 제공을 넘어, 복잡한 상호작용이 가능한 플랫폼으로 진화하게 되었습니다.
 
 ### AJAX
 
 ![Google의 검색어 자동 완성 기능](./assets/autocomplete.png)
+
 > Google의 검색어 자동 완성 기능
 
 동적 웹 어플리케이션이 발전하면서, 페이지 전체를 새로고침하지 않고도 서버와 비동기적으로 통신하여 필요한 데이터만 갱신하는 기술이 필요해졌습니다. 이를 가능하게 한 것이 AJAX(Asynchronous JavaScript and XML)입니다.
@@ -288,6 +290,7 @@ AJAX는 자바스크립트를 사용하여 백그라운드에서 서버와 통�
 ### DOM
 
 ![Web Inspector로 확인한 naver.com DOM 구조](./assets/dom.png)
+
 > Web Inspector로 확인한 naver.com DOM 구조
 
 DOM(Document Object Model)은 HTML, XML을 동적으로 조작할 수 있도록 구조화한 인터페이스입니다. DOM은 문서의 구조를 트리 형태로 표현하며, 각 노드는 문서의 요소, 속성, 텍스트 등을 나타냅니다.
@@ -320,7 +323,167 @@ SPA는 단 하나의 HTML 문서와 JavaScript 코드로 구성된 웹 어플리
 Vite를 사용하여 React 어플리케이션을 번들링하면, 정적 파일들(HTML, CSS, JavaScript 번들 파일 등)이 생성됩니다. 이러한 정적 파일들을 정적 웹 서버(예: Nginx, Apache, Vercel, Netlify 등)를 통해 배포함으로써 사용자들이 웹 브라우저를 통해 SPA에 접속할 수 있게 됩니다.
 
 ![Vite](./assets/vite.png)
+
 > Vite의 공식 홈페이지의 홍보 영상. 다양한 파일 (.tsx, .svelte 등)을 번들링하여
 > html, css, js 파일로 변환하는 것을 표현하였다.
 
 ## Fetch API 사용해보기
+
+### API 서버
+
+서버 어플리케이션에서 수행해야 하는 기능 (로그인, 결제 등)을 클라이언트 어플리케이션에서에서 처리하기 위하여 필요한 기능만 규격화해둔 서버를 API 서버라고 합니다.
+
+보통 `/api` 경로를 통해 접근할 수 있으며, REST API, GraphQL API 등이 대표적인 API 서버의 형태입니다. 우리 동아리에서는 REST API를 주로 사용합니다.
+
+![Spring Boot의 API 구현과 Swagger 명세](./assets/api.png)
+
+> Spring Boot로 구현한 API 서버
+
+### API 명세 뜯어보기
+
+![Swagger UI로 본 API 명세](./assets/swagger.png)
+
+위는 Swagger UI로 본 API 명세의 예시입니다. 해당 명세에는 다음 내용이 포함되어 있습니다.
+
+- 엔드포인트(Endpoint): API가 제공하는 기능에 접근하기 위한 URL 경로
+- HTTP 메서드(Method): API 요청의 종류 (GET, POST, PUT, DELETE 등)
+- 요청 Body(Request Body): 클라이언트가 서버로 전송하는 데이터 (예: JSON 형식)
+- 응답 Body(Response Body): 서버가 클라이언트에 반환하는 데이터 (예: JSON 형식)
+- 상태 코드(Status Code): 요청에 대한 서버의 응답 상태 (200, 404, 500 등)
+
+해당 명세에 맞게 API 요청을 보내면, 서버는 정의된 형식에 따라 응답을 반환합니다.
+여러분이 백엔드 개발자와 함께 협업을 진행하면 이러한 명세를 보면서 연동 작업을 수행하게 될 것입니다.
+
+> #### API (Application Programming Interface)
+>
+> 응용 프로그램과 응용 프로그램 사이의 연결, 연동을 위한 규격을 뜻합니다.
+> Fetch API에서의 **API**는 **내 JavaScript 어플리케이션**과 **브라우저** 간의 연동을 뜻하는 것이고,
+> API 서버에서의 **API**는 **내 JavaScript 어플리케이션**과 **백엔드 서버** 간의 연동을 뜻하는 것입니다.
+
+> #### JSON (JavaScript Object Notation)
+>
+> JavaScript의 Object 자료형을 본뜬 텍스트 문서이자 경량 데이터 교환 형식입니다.
+> CSV, XML 등 다른 데이터 교환 형식에 비해 가독성이 뛰어나고 파싱이 용이하여
+> 현대 웹 개발에서 널리 사용되고 있습니다.
+
+### Fetch API
+
+```javascript
+async function getUser() {
+  const response = await fetch("https://api.example.com/user");
+  const user = await response.json();
+  return user;
+}
+```
+
+Fetch API는 브라우저 환경에서 API 서버와 비동기 통신을 위한 현대적인 표준 규격입니다.
+`fetch` 함수를 사용하여 네트워크 요청을 보내고, Promise를 반환합니다. 이를 통해 비동기적으로 데이터를 가져오거나 서버에 데이터를 전송할 수 있습니다. 간결하고 높은 사용성을 제공합니다.
+
+#### React에서 Fetch API 사용하기
+
+```javascript
+import { useEffect, useState } from "react";
+
+function UserProfile() {
+  const [profile, setProfile] = useState(null);
+
+  // 웹 서버에서 데이터를 로드하는 것은 Side Effect에 해당합니다.
+  // 따라서 useEffect 훅을 사용하여 데이터를 State에 로드합니다.
+  useEffect(() => {
+    async function fetchProfile() {
+      const response = await fetch("/api/user/profile");
+      const data = await response.json();
+      setProfile(data);
+    }
+
+    fetchProfile();
+  }, []);
+
+  // 프로필 데이터가 아직 로드되지 않은 경우 로딩 메시지를 표시합니다.
+  if (!profile) {
+    return <div>로드 중...</div>;
+  }
+
+  return (
+    <div>
+      <h1>{profile.name}님의 프로필</h1>
+      <p>이메일: {profile.email}</p>
+    </div>
+  );
+}
+```
+
+- 서버에서 데이터를 로드하는 작업은 Side Effect에 해당하므로, `useEffect` 훅을 사용하여 컴포넌트가 마운트될 때 데이터를 불러옵니다.
+- 첫 렌더링이 완료된 후 `useEffect` 훅이 실행되므로, 초기 상태에서는 `profile`이 `null`입니다. 따라서 데이터를 불러오는 동안 로딩 메시지를 표시합니다.
+- 데이터가 로드되면 `setProfile` 함수를 사용하여 상태를 업데이트하고, 컴포넌트가 다시 렌더링되어 프로필 정보를 표시합니다.
+
+### 실습: 나의 공인 IP 주소 확인하기
+
+```text
+GET https://api.ipify.org?format=json
+```
+
+위 주소에 API 요청을 전송하고, 응답으로 받은 JSON 데이터를 React 컴포넌트에서 표시해 봅시다.
+
+## 번외
+
+### 내 어플리케이션을 어떻게 배포할까?
+
+여러분의 React App을 Vite로 번들링하면 html, css, js 파일들이 생성된다는 것을 알고 계실 것입니다. 이 파일들을 어떻게 배포하여야 할까요?
+
+APPTIVE에서 프로젝트를 진행하게 된다면 보통 Spring Boot 백엔드 개발자와 협업하여 배포를 진행하게
+됩니다. 우리 동아리에서 만드는 서비스는 대부분 단기간에 구축하는 소규모의 프로젝트가 많으므로,
+CDN 서버 등의 복잡한 인프라를 구축하지 않고 배포하는 경우가 많습니다.
+
+따라서 배포 과정을 간소화하기 위하여 Spring Boot 어플리케이션 내에 정적 파일들을 포함시키는
+방식을 사용하는 것이 좋습니다.
+
+![정적 리소스 서빙](./assets/static.png)
+
+위 구조에서 `resources/static` 디렉터리에 Vite로 번들링한 정적 파일들을 복사해 넣으면,
+Spring Boot가 동일 경로에 대한 정적 리소스 요청을 처리해 줍니다.
+
+실제 업무에서는 Vite 번들러 설정에서 output 디렉터리를 Sprint Boot 리소스 디렉터리로 지정하거나,
+Github Actions, Jenkins 등의 자동 배포 도구를 사용하여 이를 자동화하여 사용하는 경우가 많습니다.
+
+이렇게 해서 Spring Boot 어플리케이션을 빌드하면, 정적 파일들이 포함된 하나의 JAR 파일이 생성됩니다. 이는 Java 런타임에게 `exe` 파일과 같은 역할을 합니다.
+
+![Spring Boot로 Vite 번들을 서빙한다면](./assets/structure.png)
+
+> Spring Boot로 SPA를 서빙하는 구조 예시
+
+위는 이렇게 배포된 어플리케이션이 동작하는 방식을 나타낸 다이어그램입니다.
+
+- `/api` 디렉터리를 제외한 경로에 요청을 보내면, 서버는 `index.html` 파일을 반환합니다.
+- `index.html` 파일은 CSS, JavaScript 번들 파일들을 로드합니다.
+- JavaScript 번들 파일이 실행되면서 React 어플리케이션이 구동됩니다.
+- React 어플리케이션은 필요한 데이터를 동일한 API 서버에 요청하여 화면을 렌더링합니다.
+
+> #### 제가 빌드한 어플리케이션을 Vercel에 배포하고 싶어요.
+>
+> 왠만하면 Spring Boot 백엔드 개발자와 협업하여 배포하는 방식을 추천드립니다.
+> Vercel에 어플리케이션을 배포한다면, CORS 설정 등 복잡한 설정이 필요하고
+> 백엔드 개발자와의 협업이 어려워질 수 있습니다.
+
+> #### 프로젝트의 규모가 커졌을 때에도 이런 방식을 사용해야 할까요?
+>
+> ![Cloudflare CDN](./assets/cdn.png)
+>
+> 프로젝트의 규모가 커지고 트래픽이 많아지면, CDN 서버에 대한 필요가 생길 것입니다.
+> 이 경우부터는 프론트엔드와 백엔드 어플리케이션을 분리하는 복잡한 아키텍처를 고려해야 할 것인데,
+> 이 단계부터는 여러분이 CORS 설정 등 복잡한 설정을 다룰 수 있을 정도로 프로젝트에 익숙해졌을 것이라고 생각합니다.
+> 중요한 것은 상황에 맞는 기술을 적절히 선택하는 능력입니다.
+
+### SPA는 검색 엔진에 불리하다
+
+![자바스크립트를 허용해 달라고 요청하는 사이트들](./assets/noscript.png)
+
+> 자바스크립트를 허용해 달라고 요청하는 사이트들
+
+SPA는 기본적으로 빈 HTML 파일을 전달하고 내부를 JavaScript로 채우는 방식이기 때문에,
+JavaScript를 실행하지 않는 검색 엔진 크롤러 (특히 네이버, 다음 등)에 취약해
+검색 사이트에서 우리 서비스에 대한 정보를 제대로 수집하지 못할 수도 있습니다.
+
+이를 해결하기 위하여 SSR(Server Side Rendering), SSG(Static Site Generation) 등의
+기술이 존재하지만, 이는 우리 팀의 스터디 과정에서는 벗어난 이야기이므로,
+이러한 기술이 필요해지만 각자 공부해 보시기 바랍니다.
