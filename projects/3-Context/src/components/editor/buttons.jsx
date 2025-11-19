@@ -49,11 +49,11 @@ function ThemeSelector() {
 }
 
 function PublishButton() {
-  const { title, content } = useEditor();
+  // 여기를 수정하세요.
 
   return (
     <ButtonGroup>
-      <Button onClick={() => alert(`제목: ${title}\n본문: ${content}`)}>
+      <Button onClick={() => alert(`제목: -\n본문: -`)}>
         <CloudUploadIcon /> 게시하기
       </Button>
       <Button className="px-2!">
