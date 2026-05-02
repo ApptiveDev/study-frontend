@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Chiron+Hei+HK:ital,wght@0,200..900;1,200..900&family=Noto+Sans+KR:wght@100..900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+    color: #161616;
+    font-family: "Chiron Hei HK", "Noto Sans KR", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1200px;
+    min-height: 90vh;
+    margin: 0 auto;
+    padding: 60px 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid #161616;
+    padding-bottom: 20px;
+    margin-bottom: 60px;
+}
+
+.header-left {
+    font-size: 80px;
+    font-weight: 900;
+    line-height: 1;
+    visibility: hidden;
+}
+
+.header-right {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 80px;
+    align-items: flex-start;
+}
+
+.profile-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 24px;
+}
+
+.info-number {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.info-content h3 {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+}
+
+.info-content p {
+    font-size: 15px;
+    color: #555;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.visual-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 40px;
+}
+
+.mainimage {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mainimage img {
+    width: 85%;
+    max-width: 450px;
+    height: auto;
+    border-radius: 5px; 
+    object-fit: cover;
+}
+
+.deliverables {
+    width: 85%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: left;
+}
+
+.deliverables-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ff007a; 
+    text-transform: uppercase;
+}
+
+.deliverables-title {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.deliverables-sub {
+    font-size: 16px;
+    font-style: italic;
+    color: #555;
+}
