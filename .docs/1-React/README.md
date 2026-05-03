@@ -176,4 +176,4 @@ function Parent() {
 
 ## 과제: todo 리스트 만들기
 
-자세한 설명은 [해당 프로젝트](../../projects/1-React)를 참고해주세요.
+자세한 설명은 [해당 프로젝트](../../projects/1-react)를 참고해주세요.
