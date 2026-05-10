@@ -8,6 +8,8 @@ export default function ChatInput() {
       <textarea
         className="h-24 outline-none p-4 text-sm resize-vertical"
         placeholder="메시지를 입력하세요..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
     </div>
   );
