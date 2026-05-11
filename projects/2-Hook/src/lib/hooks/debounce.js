@@ -5,7 +5,7 @@
  * @param {number} delay
  */
 
-import { useRef, userCallback } from "react";
+import { useCallback, useRef } from "react";
 export default function useDebounce(callback, delay) {
     // enter your code here
     // setTimeout의 id를 저장하는 ref
@@ -13,7 +13,7 @@ export default function useDebounce(callback, delay) {
     const timeRef = useRef(null);
 
     // debounce가 적용된 함수
-    const debouncedFunction = userCallback(() => {
+    const debouncedFunction = useCallback(() => {
         // 이전에 예약된 타이머가 있다면 취소
         if (timeRef.current) {
             clearTimeout(timeRef.current);
