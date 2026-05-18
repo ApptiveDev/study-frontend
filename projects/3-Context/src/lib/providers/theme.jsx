@@ -3,19 +3,22 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 function getInitialTheme() {
-  // 이 코드를 수정하세요.
-  return "dark";
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === "dark") {
+    return true;
+  }
+  return false;
 }
 
 export function ThemeProvider({ children }) {
-  const [isDarkMode, setIsDarkModePrimitive] = useState(getInitialTheme);
+  const [isDarkMode, setIsDarkModePrimitive] = useState(getInitialTheme); // localStorage에서 테마 읽어옴
 
   function setIsDarkMode(value) {
-    // 이 코드를 수정하세요.
+    setIsDarkModePrimitive(value); // 다크모드 상태를 바꿈
   }
 
-  useEffect(() => {
-    // 이 코드를 수정하세요.
+  useEffect(() => { // isDarkMode가 바뀔 때마다 localStorage에 저장
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
   return (
