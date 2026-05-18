@@ -17,10 +17,18 @@ import { useTheme } from '../../lib/providers/theme';
 import { useEditor } from '../../lib/providers/editor';
 
 export default function EditorButtons() {
+  const { content } = useEditor();
+  const contentLength = Array.from(content).length;
+
   return (
-    <div className="flex gap-2 justify-end">
-      <ThemeSelector />
-      <PublishButton />
+    <div className="flex items-center justify-between gap-2">
+      <span className="text-sm text-muted-foreground">
+        본문 {contentLength.toLocaleString()}자
+      </span>
+      <div className="flex gap-2">
+        <ThemeSelector />
+        <PublishButton />
+      </div>
     </div>
   );
 }
