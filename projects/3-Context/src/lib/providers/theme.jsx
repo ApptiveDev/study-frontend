@@ -18,7 +18,11 @@ export function ThemeProvider({ children }) {
   }
 
   useEffect(() => { // isDarkMode가 바뀔 때마다 localStorage에 저장
-    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [isDarkMode]);
 
   return (
