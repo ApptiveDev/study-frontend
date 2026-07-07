@@ -1,10 +1,26 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const EditorContext = createContext();
 
+function getInitialTitle() {
+  return sessionStorage.getItem('editorTitle') ?? '';
+}
+
+function getInitialContent() {
+  return sessionStorage.getItem('editorContent') ?? '';
+}
+
 export function EditorProvider({ children }) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState(getInitialTitle);
+  const [content, setContent] = useState(getInitialContent);
+
+  useEffect(() => {
+    sessionStorage.setItem('editorTitle', title);
+  }, [title]);
+
+  useEffect(() => {
+    sessionStorage.setItem('editorContent', content);
+  }, [content]);
 
   return (
     <EditorContext.Provider value={{ title, setTitle, content, setContent }}>

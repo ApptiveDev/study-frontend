@@ -4,7 +4,7 @@ const ThemeContext = createContext();
 
 function getInitialTheme() {
   // 이 코드를 수정하세요.
-  return "dark";
+  return false;
 }
 
 export function ThemeProvider({ children }) {
@@ -12,10 +12,12 @@ export function ThemeProvider({ children }) {
 
   function setIsDarkMode(value) {
     // 이 코드를 수정하세요.
+    setIsDarkModePrimitive(value);
   }
 
   useEffect(() => {
     // 이 코드를 수정하세요.
+    document.documentElement.classList.toggle('dark', isDarkMode);
   }, [isDarkMode]);
 
   return (
