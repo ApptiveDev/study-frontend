@@ -49,11 +49,13 @@ function ThemeSelector() {
 }
 
 function PublishButton() {
-  // 여기를 수정하세요.
+  // useEditor 훅을 사용하여 title과 content 상태를 가져오기
+  const { title, content } = useEditor();
 
+  // 게시 버튼 클릭 시 title과 content를 alert로 표시
   return (
     <ButtonGroup>
-      <Button onClick={() => alert(`제목: -\n본문: -`)}>
+      <Button onClick={() => alert(`제목: ${title}\n본문: ${content}`)}>
         <CloudUploadIcon /> 게시하기
       </Button>
       <Button className="px-2!">
