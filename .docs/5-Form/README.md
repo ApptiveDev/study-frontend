@@ -8,26 +8,54 @@
 
 이 문장을 붙들고 다음 순서로 진행합니다.
 
-1. TypeScript로 컴포넌트와 데이터의 생김새를 표현합니다.
-2. 타입이 실행 중에는 사라진다는 사실을 확인하고, Zod로 API 응답을 검증합니다.
-3. React Router v7의 `clientLoader`로 화면을 그리기 전에 데이터를 준비합니다.
-4. TanStack Query의 `initialData`와 Suspense가 로딩 분기를 어떻게 없애는지 비교합니다.
+1. 익숙한 `useEffect` 방식으로 실습 API를 요청하는 애플리케이션을 만듭니다.
+2. TypeScript로 컴포넌트 구조를 만들고, 손으로 적은 데이터로 화면부터 확인합니다.
+3. 타입이 실행 중에는 사라진다는 사실을 확인하고, Zod로 API 응답을 검증합니다.
+4. React Router v7의 `clientLoader`와 TanStack Query를 단계적으로 도입해 코드를 개선합니다.
 
 이 문서는 JavaScript와 Vite 기본 템플릿으로 React의 기본 훅을 써 본 사람을 기준으로 씁니다. TypeScript는 개발이 편해지는 만큼만 다루고, Router의 streaming이나 Query의 세부 캐시 옵션처럼 지금 필요하지 않은 내용은 다루지 않습니다.
 
+## 0. 실습 API
+
+이번 실습은 처음부터 끝까지 하나의 API로 진행합니다. 우리 동아리 멘토들의 프로필 목록입니다.
+
+```text
+GET https://insd.dev/api/apptive/profiles
+```
+
+```json
+[
+  {
+    "id": "myeolinmalchi",
+    "name": "강민석",
+    "avatar": "https://github.com/myeolinmalchi.png",
+    "githubUrl": "https://github.com/myeolinmalchi"
+  },
+  {
+    "id": "insd47",
+    "name": "황인성",
+    "email": "me@insd.dev",
+    "avatar": "https://github.com/insd47.png",
+    "githubUrl": "https://github.com/insd47"
+  }
+]
+```
+
+한 가지 눈여겨볼 점이 있습니다. **`email`은 있는 사람도 있고 없는 사람도 있습니다.** 실제 API에는 이렇게 있을 수도 없을 수도 있는 값이 흔한데, 뒤에서 TypeScript의 선택 프로퍼티와 Zod의 `optional()`로 자연스럽게 표현하게 됩니다.
+
 ## 1. 익숙한 코드에서 시작하기
 
-먼저 지금까지 써 온 방식을 기준으로 삼아 봅시다.
+먼저 지금까지 써 온 방식 그대로 프로필 목록 화면을 만들어 봅시다.
 
 ```jsx
 import { useEffect, useState } from 'react';
 
-export default function PostList() {
-  const [posts, setPosts] = useState(null);
+export default function ProfileList() {
+  const [profiles, setProfiles] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
+    fetch('https://insd.dev/api/apptive/profiles')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`요청 실패: ${response.status}`);
@@ -35,20 +63,20 @@ export default function PostList() {
 
         return response.json();
       })
-      .then(setPosts)
+      .then(setProfiles)
       .catch(setError);
   }, []);
 
   if (error) return <p>불러오지 못했습니다.</p>;
-  if (posts === null) return <p>불러오는 중...</p>;
+  if (profiles === null) return <p>불러오는 중...</p>;
 
-  return posts.map((post) => <article key={post.id}>{post.title}</article>);
+  return profiles.map((profile) => <article key={profile.id}>{profile.name}</article>);
 }
 ```
 
-Effect는 첫 렌더링이 화면에 반영된 뒤에 실행됩니다. 그러니 첫 렌더링 시점의 `posts`는 언제나 `null`이고, 요청이 끝나 `setPosts()`가 호출되어야 비로소 데이터가 있는 화면을 그릴 수 있습니다.
+Effect는 첫 렌더링이 화면에 반영된 뒤에 실행됩니다. 그러니 첫 렌더링 시점의 `profiles`는 언제나 `null`이고, 요청이 끝나 `setProfiles()`가 호출되어야 비로소 데이터가 있는 화면을 그릴 수 있습니다.
 
-초기값으로 빈 배열 `[]`을 쓰지 않은 데에도 이유가 있습니다. 빈 배열로 시작하면 "아직 불러오지 않음"과 "게시물이 정말 0개임"을 구분할 수 없기 때문에, `null`을 로딩 전 상태로 정한 것입니다.
+초기값으로 빈 배열 `[]`을 쓰지 않은 데에도 이유가 있습니다. 빈 배열로 시작하면 "아직 불러오지 않음"과 "멤버가 정말 0명임"을 구분할 수 없기 때문에, `null`을 로딩 전 상태로 정한 것입니다.
 
 ![Effect에서 요청한 데이터가 다시 렌더링되기까지의 순서](./assets/effect-request-sequence.png)
 
@@ -73,50 +101,52 @@ JSX가 들어가는 TypeScript 파일은 `.ts`가 아니라 `.tsx` 확장자를 
 
 ```ts
 const title: string = 'API 요청과 React 상태 관리';
-const postCount: number = 100;
-const published: boolean = true;
+const memberCount: number = 4;
+const recruiting: boolean = true;
 ```
 
 여러 타입 가운데 하나가 올 수 있다면 `|`로 잇습니다. 이런 타입을 유니온(Union) 타입이라고 부르며, 요청 전후의 State를 표현할 때 자주 씁니다.
 
 ```ts
-let selectedPostId: number | null = null;
+let selectedProfileId: string | null = null;
 ```
 
-이제 `selectedPostId`에는 숫자 아니면 `null`만 담을 수 있습니다.
+이제 `selectedProfileId`에는 문자열 아니면 `null`만 담을 수 있습니다.
 
 ### `interface`로 Props 선언하기
 
-객체가 어떤 프로퍼티를 어떤 타입으로 가지는지는 `interface`로 선언합니다.
+객체가 어떤 프로퍼티를 어떤 타입으로 가지는지는 `interface`로 선언합니다. 0장에서 본 API 응답을 그대로 옮겨 봅시다.
 
 ```tsx
-interface Post {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
+interface Profile {
+  id: string;
+  name: string;
+  email?: string;
+  avatar: string;
+  githubUrl: string;
 }
 
-interface PostItemProps {
-  post: Post;
+interface ProfileItemProps {
+  profile: Profile;
   selected?: boolean;
-  onSelect: (postId: number) => void;
+  onSelect: (profileId: string) => void;
 }
 
-function PostItem({ post, selected = false, onSelect }: PostItemProps) {
+function ProfileItem({ profile, selected = false, onSelect }: ProfileItemProps) {
   return (
-    <button aria-pressed={selected} onClick={() => onSelect(post.id)}>
-      {post.title}
+    <button aria-pressed={selected} onClick={() => onSelect(profile.id)}>
+      <img src={profile.avatar} alt="" width={24} />
+      {profile.name}
     </button>
   );
 }
 ```
 
-- `post: Post`는 반드시 전달해야 하는 prop입니다.
-- `selected?: boolean`의 `?`는 생략해도 된다는 표시입니다.
-- `(postId: number) => void`는 숫자를 받고 아무것도 반환하지 않는 함수 타입입니다.
+- `email?: string`의 `?`는 없을 수도 있다는 표시입니다. 실제 응답에서 `email`이 없는 사람이 있었던 것을 기억해 봅시다.
+- `profile: Profile`은 반드시 전달해야 하는 prop이고, `selected?`는 생략할 수 있습니다.
+- `(profileId: string) => void`는 문자열을 받고 아무것도 반환하지 않는 함수 타입입니다.
 
-이제 `<PostItem />`을 사용할 때 `post`나 `onSelect`를 빠뜨리거나 엉뚱한 타입을 넘기면, 실행해 보기 전에 편집기가 오류를 알려 줍니다.
+이제 `<ProfileItem />`을 사용할 때 `profile`이나 `onSelect`를 빠뜨리거나 엉뚱한 타입을 넘기면, 실행해 보기 전에 편집기가 오류를 알려 줍니다.
 
 ### `extends`로 이미 있는 Props 물려받기
 
@@ -164,7 +194,7 @@ function AppButton({ tone = 'primary', ...buttonProps }: AppButtonProps) {
 `ComponentProps`는 직접 만든 컴포넌트에도 쓸 수 있습니다.
 
 ```ts
-type PostItemPropsCopy = ComponentProps<typeof PostItem>;
+type ProfileItemPropsCopy = ComponentProps<typeof ProfileItem>;
 ```
 
 ### 타입 추론: 모든 곳에 타입을 적지 않아도 됩니다
@@ -172,13 +202,27 @@ type PostItemPropsCopy = ComponentProps<typeof PostItem>;
 TypeScript는 값과 코드의 흐름을 보고 스스로 타입을 알아냅니다.
 
 ```ts
-const posts: Post[] = [{ userId: 1, id: 1, title: '첫 게시물', body: '내용' }];
+const profiles: Profile[] = [
+  {
+    id: 'myeolinmalchi',
+    name: '강민석',
+    avatar: 'https://github.com/myeolinmalchi.png',
+    githubUrl: 'https://github.com/myeolinmalchi',
+  },
+  {
+    id: 'insd47',
+    name: '황인성',
+    email: 'me@insd.dev',
+    avatar: 'https://github.com/insd47.png',
+    githubUrl: 'https://github.com/insd47',
+  },
+];
 
-const postIds = posts.map((post) => post.id);
-// post는 Post로, postIds는 number[]로 추론됩니다.
+const names = profiles.map((profile) => profile.name);
+// profile은 Profile로, names는 string[]으로 추론됩니다.
 
-function getTitle(post: Post) {
-  return post.title;
+function getName(profile: Profile) {
+  return profile.name;
 }
 // 반환 타입은 string으로 추론됩니다.
 ```
@@ -188,10 +232,36 @@ function getTitle(post: Post) {
 초기값만으로 타입을 다 알 수 없을 때는 훅의 꺾쇠 안에 타입을 알려 줍니다.
 
 ```tsx
-const [posts, setPosts] = useState<Post[] | null>(null);
+const [profiles, setProfiles] = useState<Profile[] | null>(null);
 ```
 
-이렇게 하면 `posts`가 `null`일 가능성을 처리하지 않은 채 `posts.map()`을 호출했을 때 TypeScript가 오류를 표시해 줍니다.
+이렇게 하면 `profiles`가 `null`일 가능성을 처리하지 않은 채 `profiles.map()`을 호출했을 때 TypeScript가 오류를 표시해 줍니다.
+
+### 손으로 적은 데이터로 테스트 렌더링
+
+API를 붙이기 전에, 방금 만든 컴포넌트가 잘 동작하는지 위의 `profiles` 배열로 먼저 확인해 봅시다.
+
+```tsx
+function ProfileList() {
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+
+  return (
+    <ul>
+      {profiles.map((profile) => (
+        <li key={profile.id}>
+          <ProfileItem
+            profile={profile}
+            selected={profile.id === selectedProfileId}
+            onSelect={setSelectedProfileId}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+데이터가 이미 준비되어 있으니 로딩 분기가 하나도 없다는 점을 봐 두면 좋습니다. 이번 회차의 나머지는 **API에서 받아 온 데이터로도 화면을 이렇게 쓰기 위한 여정**입니다.
 
 ### 제네릭 맛보기
 
@@ -202,61 +272,61 @@ function getFirst<T>(items: T[]): T | undefined {
   return items[0];
 }
 
-const firstPost = getFirst(posts);
-// Post | undefined로 추론
+const firstProfile = getFirst(profiles);
+// Profile | undefined로 추론
 
 const firstTitle = getFirst(['TypeScript', 'React Router']);
 // string | undefined로 추론
 ```
 
-호출할 때 `<Post>`를 직접 적지 않아도, 인자로 넘어온 배열을 보고 `T`가 무엇인지 추론됩니다. 앞에서 본 `PropsWithChildren`과 `ComponentProps<'button'>`도 모두 제네릭입니다.
+호출할 때 `<Profile>`을 직접 적지 않아도, 인자로 넘어온 배열을 보고 `T`가 무엇인지 추론됩니다. 앞에서 본 `PropsWithChildren`과 `ComponentProps<'button'>`도 모두 제네릭입니다.
 
 ### 타입은 빌드하면 사라진다
 
 이번 회차에서 가장 중요한 사실 하나를 확인하고 넘어가겠습니다. 다음 TypeScript 코드를 빌드하면,
 
 ```ts
-interface Post {
-  id: number;
-  title: string;
+interface Profile {
+  id: string;
+  name: string;
 }
 
-function getTitle(post: Post): string {
-  return post.title;
+function getName(profile: Profile): string {
+  return profile.name;
 }
 ```
 
 브라우저가 실제로 실행하는 JavaScript에는 이것만 남습니다.
 
 ```js
-function getTitle(post) {
-  return post.title;
+function getName(profile) {
+  return profile.name;
 }
 ```
 
-`interface Post`도, `: Post`와 `: string` 표기도 흔적 없이 사라졌습니다. 타입은 편집기와 컴파일러가 코드를 검사할 때 쓰는 설계도일 뿐, 브라우저에게는 전달되지 않습니다.
+`interface Profile`도, `: Profile`과 `: string` 표기도 흔적 없이 사라졌습니다. 타입은 편집기와 컴파일러가 코드를 검사할 때 쓰는 설계도일 뿐, 브라우저에게는 전달되지 않습니다.
 
 ![TypeScript 타입이 빌드 과정에서 제거되는 모습](./assets/type-erasure-pipeline.png)
 
 그래서 타입을 실행 중의 검사에 쓸 수 없습니다.
 
 ```ts
-if (data instanceof Post) {
-  // 오류: 'Post'은(는) 형식만 참조하지만, 여기서는 값으로 사용되고 있습니다.
+if (data instanceof Profile) {
+  // 오류: 'Profile'은(는) 형식만 참조하지만, 여기서는 값으로 사용되고 있습니다.
 }
 ```
 
 더 중요한 것은, **타입을 적어 두었다고 해서 값이 검사되지는 않는다**는 점입니다.
 
 ```ts
-const data = JSON.parse('{ "id": "1", "title": 123 }') as Post;
+const data = JSON.parse('{ "id": 47, "name": null }') as Profile;
 
-data.title.toUpperCase();
+data.name.toUpperCase();
 // 편집기도 컴파일러도 아무 말이 없습니다.
-// 실행하면 → TypeError: data.title.toUpperCase is not a function
+// 실행하면 → TypeError: Cannot read properties of null (reading 'toUpperCase')
 ```
 
-`as Post`는 "이 값을 `Post`로 믿어 달라"는 선언일 뿐, 검사가 아닙니다. TypeScript는 우리가 적은 타입을 그대로 믿고, 실행될 때에는 그 믿음을 확인할 코드 자체가 남아 있지 않습니다.
+`as Profile`은 "이 값을 `Profile`로 믿어 달라"는 선언일 뿐, 검사가 아닙니다. TypeScript는 우리가 적은 타입을 그대로 믿고, 실행될 때에는 그 믿음을 확인할 코드 자체가 남아 있지 않습니다.
 
 프로젝트 안에서 우리가 만드는 값은 컴파일러가 끝까지 지켜보고 있으니 괜찮습니다. 문제는 **API 응답처럼 바깥에서 들어오는 값**입니다. 서버가 명세와 다른 값을 보내도 TypeScript는 알 길이 없으므로, 실행 중에 직접 검사해야 합니다. `typeof`로 프로퍼티를 하나하나 확인하는 코드를 손으로 쓸 수도 있지만, 그러면 타입 선언과 검사 코드를 이중으로 관리하게 됩니다. 이 일을 대신해 주는 도구가 Zod입니다.
 
@@ -271,46 +341,49 @@ pnpm add zod
 ### 스키마 하나로 검증과 타입을 함께
 
 ```ts
-// app/api/post-schema.ts
+// app/api/profile-schema.ts
 import { z } from 'zod';
 
-export const postSchema = z.object({
-  userId: z.number(),
-  id: z.number(),
-  title: z.string().min(1),
-  body: z.string(),
+export const profileSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1),
+  email: z.email().optional(),
+  avatar: z.url(),
+  githubUrl: z.url(),
 });
 
-export const postsSchema = z.array(postSchema);
+export const profilesSchema = z.array(profileSchema);
 
-export type Post = z.infer<typeof postSchema>;
+export type Profile = z.infer<typeof profileSchema>;
 ```
 
-`postsSchema`는 실행 중의 검증을 맡고, `z.infer`는 같은 스키마에서 TypeScript 타입을 뽑아냅니다. 값의 생김새를 한 곳에만 적어 두면 검증 코드와 타입이 어긋날 일이 없습니다.
+`profilesSchema`는 실행 중의 검증을 맡고, `z.infer`는 같은 스키마에서 TypeScript 타입을 뽑아냅니다. 값의 생김새를 한 곳에만 적어 두면 검증 코드와 타입이 어긋날 일이 없습니다.
+
+스키마가 타입보다 표현력이 좋다는 점도 봐 둘 만합니다. `email?: string`은 "문자열이거나 없음"까지만 말하지만, `z.email().optional()`은 **이메일 형식이 맞는지**까지 검사합니다. `z.url()`도 마찬가지입니다.
 
 ![검증하지 않은 API 응답이 Zod를 거쳐 애플리케이션 데이터가 되는 과정](./assets/runtime-validation-gate.png)
 
 ### 검사는 경계에서 한 번만
 
 ```ts
-// app/api/posts.ts
-import { postsSchema } from './post-schema';
+// app/api/profiles.ts
+import { profilesSchema } from './profile-schema';
 
-const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
+const PROFILES_URL = 'https://insd.dev/api/apptive/profiles';
 
-export async function getPosts(signal?: AbortSignal) {
-  const response = await fetch(POSTS_URL, { signal });
+export async function getProfiles(signal?: AbortSignal) {
+  const response = await fetch(PROFILES_URL, { signal });
 
   if (!response.ok) {
-    throw new Error(`게시물 요청 실패: ${response.status}`);
+    throw new Error(`프로필 요청 실패: ${response.status}`);
   }
 
   const data: unknown = await response.json();
-  return postsSchema.parse(data);
+  return profilesSchema.parse(data);
 }
 ```
 
-응답을 일단 `unknown`으로 받고, `parse()`를 통과한 값만 반환합니다. 검사에 실패하면 `parse()`가 오류를 던지므로, `getPosts()` 바깥의 세계에는 검증된 `Post[]`만 존재합니다. 화면마다 같은 검사를 반복할 필요가 없습니다.
+응답을 일단 `unknown`으로 받고, `parse()`를 통과한 값만 반환합니다. 검사에 실패하면 `parse()`가 오류를 던지므로, `getProfiles()` 바깥의 세계에는 검증된 `Profile[]`만 존재합니다. 화면마다 같은 검사를 반복할 필요가 없습니다.
 
 ## 4. React Router v7: 화면을 그리기 전에 데이터 준비하기
 
@@ -350,33 +423,36 @@ export default {
 // app/routes.ts
 import { index, type RouteConfig } from '@react-router/dev/routes';
 
-export default [index('routes/posts.tsx')] satisfies RouteConfig;
+export default [index('routes/profiles.tsx')] satisfies RouteConfig;
 ```
 
 ### 4단계: `clientLoader`로 요청 옮기기
 
 ```tsx
-// app/routes/posts.tsx
-import type { Route } from './+types/posts';
-import { getPosts } from '../api/posts';
+// app/routes/profiles.tsx
+import type { Route } from './+types/profiles';
+import { getProfiles } from '../api/profiles';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   return {
-    posts: await getPosts(request.signal),
+    profiles: await getProfiles(request.signal),
   };
 }
 
 export function HydrateFallback() {
-  return <p>게시물을 불러오는 중입니다.</p>;
+  return <p>프로필을 불러오는 중입니다.</p>;
 }
 
-export default function Posts({ loaderData }: Route.ComponentProps) {
+export default function Profiles({ loaderData }: Route.ComponentProps) {
   return (
     <main>
-      <h1>게시물</h1>
+      <h1>APPTIVE 멤버</h1>
       <ul>
-        {loaderData.posts.map((post) => (
-          <li key={post.id}>{post.title}</li>
+        {loaderData.profiles.map((profile) => (
+          <li key={profile.id}>
+            <img src={profile.avatar} alt="" width={32} />
+            <a href={profile.githubUrl}>{profile.name}</a>
+          </li>
         ))}
       </ul>
     </main>
@@ -388,12 +464,12 @@ export default function Posts({ loaderData }: Route.ComponentProps) {
 
 1. `clientLoader`가 브라우저에서 요청을 시작합니다.
 2. 첫 진입에서 데이터가 아직 없다면 `HydrateFallback`이 보입니다.
-3. 요청이 끝나면 `loaderData.posts`가 채워진 채로 컴포넌트가 렌더링됩니다.
+3. 요청이 끝나면 `loaderData.profiles`가 채워진 채로 컴포넌트가 렌더링됩니다.
 
-`loaderData.posts`의 타입은 `clientLoader`의 반환 타입에서 자동으로 추론된 `Post[]`입니다. `null`도 `undefined`도 아니므로, 1장에서 썼던 이 조건문이 통째로 사라집니다.
+`loaderData.profiles`의 타입은 `clientLoader`의 반환 타입에서 자동으로 추론된 `Profile[]`입니다. `null`도 `undefined`도 아니므로, 1장에서 썼던 이 조건문이 통째로 사라집니다.
 
 ```tsx
-if (posts === null) return <p>불러오는 중...</p>;
+if (profiles === null) return <p>불러오는 중...</p>;
 ```
 
 기다리는 화면은 컴포넌트 안이 아니라 Route Module의 `HydrateFallback`이 맡습니다. 이것이 `useEffect` 방식과 가장 크게 달라지는 지점입니다.
@@ -438,7 +514,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 React Router의 `clientLoader`는 **언제 데이터를 가져와서 언제 화면을 그릴지**를 관리합니다. TanStack Query는 가져온 서버 데이터를 **어떤 키로 저장하고 언제 다시 확인할지**를 관리합니다. 역할이 다르기 때문에 함께 쓸 수 있습니다.
 
-같은 목록을 여러 화면에서 쓰거나, 이전에 받아 둔 데이터를 먼저 보여 주면서 뒤에서 최신 값을 확인하고 싶을 때 Query의 캐시가 힘을 발휘합니다.
+같은 프로필 목록을 여러 화면에서 쓰거나, 이전에 받아 둔 데이터를 먼저 보여 주면서 뒤에서 최신 값을 확인하고 싶을 때 Query의 캐시가 힘을 발휘합니다.
 
 ### `useEffect`로 캐시까지 직접 만든다면
 
@@ -447,19 +523,19 @@ React Router의 `clientLoader`는 **언제 데이터를 가져와서 언제 화�
 ```jsx
 const cache = new Map();
 
-function usePosts() {
-  const [posts, setPosts] = useState(() => cache.get('posts') ?? null);
+function useProfiles() {
+  const [profiles, setProfiles] = useState(() => cache.get('profiles') ?? null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (cache.has('posts')) return; // 받아 둔 데이터가 있으면 요청하지 않음
+    if (cache.has('profiles')) return; // 받아 둔 데이터가 있으면 요청하지 않음
 
     const controller = new AbortController();
 
-    getPosts(controller.signal)
+    getProfiles(controller.signal)
       .then((data) => {
-        cache.set('posts', data);
-        setPosts(data);
+        cache.set('profiles', data);
+        setProfiles(data);
       })
       .catch((err) => {
         if (err.name !== 'AbortError') setError(err); // 취소는 오류가 아님
@@ -468,7 +544,7 @@ function usePosts() {
     return () => controller.abort(); // 화면이 사라지면 요청 취소
   }, []);
 
-  return { posts, error };
+  return { profiles, error };
 }
 ```
 
@@ -479,15 +555,15 @@ function usePosts() {
 - 실패한 요청을 다시 시도하기
 - 다른 창을 보다가 돌아왔을 때 최신 값으로 갱신하기
 
-무엇보다 이 훅은 게시물 전용입니다. 데이터 종류가 하나 늘 때마다 이 코드를 통째로 복사해서 고치게 됩니다.
+무엇보다 이 훅은 프로필 전용입니다. 데이터 종류가 하나 늘 때마다 이 코드를 통째로 복사해서 고치게 됩니다.
 
 TanStack Query를 쓰면 위의 모든 일이 이 한 줄로 줄어듭니다.
 
 ```tsx
-const { data: posts, isPending, isError, error } = useQuery(postsQueryOptions);
+const { data: profiles, isPending, isError, error } = useQuery(profilesQueryOptions);
 ```
 
-`postsQueryOptions`는 잠시 뒤에 만들 설정 객체입니다. 지금은 직접 만들던 것들이 전부 저 안에 들어간다는 것만 기억하고, 설치부터 시작합시다.
+`profilesQueryOptions`는 잠시 뒤에 만들 설정 객체입니다. 지금은 직접 만들던 것들이 전부 저 안에 들어간다는 것만 기억하고, 설치부터 시작합시다.
 
 ```bash
 pnpm add @tanstack/react-query
@@ -524,35 +600,35 @@ export default function App() {
 `queryKey`는 캐시에서 데이터를 찾는 주소이고, `queryFn`은 데이터가 없거나 오래되었을 때 실행할 함수입니다.
 
 ```ts
-// app/queries/posts.ts
+// app/queries/profiles.ts
 import { queryOptions } from '@tanstack/react-query';
-import { getPosts } from '../api/posts';
+import { getProfiles } from '../api/profiles';
 
-export const postsQueryOptions = queryOptions({
-  queryKey: ['posts'],
-  queryFn: ({ signal }) => getPosts(signal),
+export const profilesQueryOptions = queryOptions({
+  queryKey: ['profiles'],
+  queryFn: ({ signal }) => getProfiles(signal),
   staleTime: 30_000,
 });
 ```
 
-목록이 필요한 모든 곳에서 같은 `postsQueryOptions`를 쓰면, 화면마다 key나 요청 함수가 미묘하게 달라지는 실수를 막을 수 있습니다.
+목록이 필요한 모든 곳에서 같은 `profilesQueryOptions`를 쓰면, 화면마다 key나 요청 함수가 미묘하게 달라지는 실수를 막을 수 있습니다.
 
 `staleTime: 30_000`은 응답을 받은 뒤 30초 동안은 그 데이터를 신선한 것으로 취급한다는 뜻입니다. 30초가 지나면 캐시를 지운다는 뜻이 아니라, 다음에 필요해졌을 때 다시 확인한다는 뜻입니다.
 
 ### loader의 값을 Query에 알려 주지 않으면
 
-`clientLoader`가 게시물을 받아 왔다고 해서 Query의 캐시가 저절로 채워지지는 않습니다. 둘은 서로를 모릅니다. 같은 라우트에서 `loaderData`를 쓰지 않고 `useQuery`만 호출해 봅시다.
+`clientLoader`가 프로필을 받아 왔다고 해서 Query의 캐시가 저절로 채워지지는 않습니다. 둘은 서로를 모릅니다. 같은 라우트에서 `loaderData`를 쓰지 않고 `useQuery`만 호출해 봅시다.
 
 ```tsx
 import { useQuery } from '@tanstack/react-query';
-import type { Route } from './+types/posts';
-import { postsQueryOptions } from '../queries/posts';
+import type { Route } from './+types/profiles';
+import { profilesQueryOptions } from '../queries/profiles';
 
-export default function Posts({ loaderData }: Route.ComponentProps) {
-  const query = useQuery(postsQueryOptions);
+export default function Profiles({ loaderData }: Route.ComponentProps) {
+  const query = useQuery(profilesQueryOptions);
 
   if (query.isPending) {
-    return <p>게시물을 불러오는 중입니다.</p>;
+    return <p>프로필을 불러오는 중입니다.</p>;
   }
 
   if (query.isError) {
@@ -561,47 +637,47 @@ export default function Posts({ loaderData }: Route.ComponentProps) {
 
   return (
     <ul>
-      {query.data.map((post) => (
-        <li key={post.id}>{post.title}</li>
+      {query.data.map((profile) => (
+        <li key={profile.id}>{profile.name}</li>
       ))}
     </ul>
   );
 }
 ```
 
-`loaderData.posts`에 이미 `Post[]`가 있는데도 캐시는 비어 있으니, `queryFn`이 같은 게시물을 한 번 더 요청합니다. 그리고 요청이 끝나기 전까지 `query.data`의 타입은 `Post[] | undefined`이므로 `isPending` 분기가 되살아납니다.
+`loaderData.profiles`에 이미 `Profile[]`이 있는데도 캐시는 비어 있으니, `queryFn`이 같은 목록을 한 번 더 요청합니다. 그리고 요청이 끝나기 전까지 `query.data`의 타입은 `Profile[] | undefined`이므로 `isPending` 분기가 되살아납니다.
 
-모양은 다르지만, 1장의 `posts === null`과 본질이 같습니다. **데이터가 아직 없을 가능성을 컴포넌트가 도로 떠안은 것**입니다.
+모양은 다르지만, 1장의 `profiles === null`과 본질이 같습니다. **데이터가 아직 없을 가능성을 컴포넌트가 도로 떠안은 것**입니다.
 
 ### loader의 값을 `initialData`로 넘기면
 
 `clientLoader`가 준비해 둔 값을 Query의 첫 캐시로 전달할 수 있습니다.
 
 ```tsx
-// app/routes/posts.tsx
+// app/routes/profiles.tsx
 import { useQuery } from '@tanstack/react-query';
-import type { Route } from './+types/posts';
-import { getPosts } from '../api/posts';
-import { postsQueryOptions } from '../queries/posts';
+import type { Route } from './+types/profiles';
+import { getProfiles } from '../api/profiles';
+import { profilesQueryOptions } from '../queries/profiles';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   return {
-    posts: await getPosts(request.signal),
+    profiles: await getProfiles(request.signal),
   };
 }
 
-export default function Posts({ loaderData }: Route.ComponentProps) {
-  const { data: posts, isFetching } = useQuery({
-    ...postsQueryOptions,
-    initialData: loaderData.posts,
+export default function Profiles({ loaderData }: Route.ComponentProps) {
+  const { data: profiles, isFetching } = useQuery({
+    ...profilesQueryOptions,
+    initialData: loaderData.profiles,
   });
 
   return (
     <main>
       {isFetching && <small>최신 목록을 확인하는 중...</small>}
       <ul>
-        {posts.map((post) => (
-          <li key={post.id}>{post.title}</li>
+        {profiles.map((profile) => (
+          <li key={profile.id}>{profile.name}</li>
         ))}
       </ul>
     </main>
@@ -609,7 +685,7 @@ export default function Posts({ loaderData }: Route.ComponentProps) {
 }
 ```
 
-`initialData`가 있으면 Query는 처음부터 성공 상태로 시작합니다. `posts`의 타입은 그냥 `Post[]`이고, `isPending` 분기는 필요 없습니다.
+`initialData`가 있으면 Query는 처음부터 성공 상태로 시작합니다. `profiles`의 타입은 그냥 `Profile[]`이고, `isPending` 분기는 필요 없습니다.
 
 `initialData`는 잠깐 보여 주는 가짜 값이 아니라 캐시에 실제로 저장되는 데이터입니다. 그래서 완전한 API 응답을 넘겨야 합니다. 이 예제에서는 `staleTime`이 30초이므로 마운트 직후에 같은 요청을 반복하지 않고, 데이터가 오래되면 화면을 유지한 채 뒤에서 다시 확인합니다.
 
@@ -630,13 +706,13 @@ Suspense가 마법처럼 보이지 않도록, 알리는 방법을 잠깐 들여�
 
 ```tsx
 // useSuspenseQuery를 아주 단순하게 흉내 낸 코드
-function usePostsSuspense() {
-  if (cache.has('posts')) {
-    return cache.get('posts'); // 데이터가 있으면 평범하게 반환
+function useProfilesSuspense() {
+  if (cache.has('profiles')) {
+    return cache.get('profiles'); // 데이터가 있으면 평범하게 반환
   }
 
   // 없으면 "지금 요청 중"이라는 Promise를 던진다
-  throw getPosts().then((posts) => cache.set('posts', posts));
+  throw getProfiles().then((profiles) => cache.set('profiles', profiles));
 }
 ```
 
@@ -658,7 +734,7 @@ import { queryClient } from './query-client';
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<p>게시물을 불러오는 중입니다.</p>}>
+      <Suspense fallback={<p>프로필을 불러오는 중입니다.</p>}>
         <Outlet />
       </Suspense>
     </QueryClientProvider>
@@ -672,24 +748,24 @@ Boundary는 애플리케이션 루트에 한 번 두는 것으로 시작합니�
 
 ```tsx
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { postsQueryOptions } from '../queries/posts';
+import { profilesQueryOptions } from '../queries/profiles';
 
-export default function Posts() {
-  const { data: posts } = useSuspenseQuery(postsQueryOptions);
+export default function Profiles() {
+  const { data: profiles } = useSuspenseQuery(profilesQueryOptions);
 
   return (
     <ul>
-      {posts.map((post) => (
-        <li key={post.id}>{post.title}</li>
+      {profiles.map((profile) => (
+        <li key={profile.id}>{profile.name}</li>
       ))}
     </ul>
   );
 }
 ```
 
-캐시에 데이터가 없으면 `Posts`의 렌더링은 완성되지 않고, 그동안 Suspense의 `fallback`이 보입니다. 요청이 성공해 다시 렌더링될 때 `posts`는 언제나 `Post[]`입니다.
+캐시에 데이터가 없으면 `Profiles`의 렌더링은 완성되지 않고, 그동안 Suspense의 `fallback`이 보입니다. 요청이 성공해 다시 렌더링될 때 `profiles`는 언제나 `Profile[]`입니다.
 
-그래서 이 컴포넌트에는 `posts === null`도, `isPending`도, `data === undefined`도 없습니다. 요청이 실패하면 오류가 렌더링 중에 던져지고, Framework Mode에서는 앞서 만든 Route `ErrorBoundary`가 받아 줍니다.
+그래서 이 컴포넌트에는 `profiles === null`도, `isPending`도, `data === undefined`도 없습니다. 요청이 실패하면 오류가 렌더링 중에 던져지고, Framework Mode에서는 앞서 만든 Route `ErrorBoundary`가 받아 줍니다.
 
 ### `clientLoader`와는 접근이 어떻게 다를까
 
@@ -706,13 +782,13 @@ export default function Posts() {
 
 ### 다섯 가지 흐름 비교
 
-| 방식                       | 첫 렌더링의 데이터          | 컴포넌트 안의 로딩 분기 | 기다림을 맡는 곳    |
-| -------------------------- | --------------------------- | ----------------------- | ------------------- |
-| `useState` + Effect        | `null`                      | 필요                    | 컴포넌트 자신       |
-| `clientLoader`             | `Post[]`                    | 불필요                  | `HydrateFallback`   |
-| `useQuery`                 | `undefined`                 | 필요                    | 컴포넌트 자신       |
-| `useQuery` + `initialData` | `Post[]`                    | 불필요                  | loader가 이미 처리  |
-| `useSuspenseQuery`         | `Post[]` (성공 렌더링에서)  | 불필요                  | Suspense `fallback` |
+| 방식                       | 첫 렌더링의 데이터            | 컴포넌트 안의 로딩 분기 | 기다림을 맡는 곳    |
+| -------------------------- | ----------------------------- | ----------------------- | ------------------- |
+| `useState` + Effect        | `null`                        | 필요                    | 컴포넌트 자신       |
+| `clientLoader`             | `Profile[]`                   | 불필요                  | `HydrateFallback`   |
+| `useQuery`                 | `undefined`                   | 필요                    | 컴포넌트 자신       |
+| `useQuery` + `initialData` | `Profile[]`                   | 불필요                  | loader가 이미 처리  |
+| `useSuspenseQuery`         | `Profile[]` (성공 렌더링에서) | 불필요                  | Suspense `fallback` |
 
 이 표에서 눈여겨볼 것은 네트워크가 아니라 **데이터가 없는 순간을 누가 책임지는가**입니다. 그 책임이 컴포넌트 안에 남아 있는 두 방식에서만 로딩 분기가 필요합니다.
 
@@ -732,7 +808,7 @@ URL에 맞는 데이터를 한 번 읽어 오는 화면이라면 `clientLoader`�
 ## 정리
 
 - 네트워크는 여전히 비동기입니다. 옮겨진 것은 데이터를 기다리는 책임뿐입니다.
-- `interface`로 Props를 선언하고, `extends`로 `PropsWithChildren`이나 `ComponentProps`를 물려받아 확장합니다.
+- `interface`로 Props를 선언하고, `extends`로 `PropsWithChildren`이나 `ComponentProps`를 물려받아 확장합니다. 있을 수도 없을 수도 있는 값은 `?`로 표현합니다.
 - 입구에만 타입을 적으면 나머지는 TypeScript가 추론합니다. 제네릭은 그 추론을 함수와 타입에까지 넓힌 것입니다.
 - 타입은 빌드하면 사라지므로 실행 중의 값을 검사하지 못합니다. `as`는 검증이 아니라 믿어 달라는 선언입니다.
 - 바깥에서 들어오는 값은 `unknown`으로 받아 Zod 스키마로 검증하고, `z.infer`로 타입까지 함께 얻습니다.
