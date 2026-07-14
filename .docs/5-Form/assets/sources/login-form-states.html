@@ -1,0 +1,58 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  svg { display: block; }
+</style>
+<svg width="1000" height="470" viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg"
+     font-family="Pretendard, 'Apple SD Gothic Neo', sans-serif">
+
+  <!-- login card -->
+  <rect x="60" y="40" width="360" height="390" rx="16" fill="#ffffff" stroke="#dfe2e5" stroke-width="1.5" />
+  <text x="90" y="96" font-size="20" font-weight="700" fill="#191b1c">로그인</text>
+
+  <!-- email field (error state) -->
+  <text x="90" y="140" font-size="13" font-weight="600" fill="#71787f">이메일</text>
+  <rect x="90" y="152" width="300" height="44" rx="10" fill="#ffffff" stroke="#e8730e" stroke-width="1.6" />
+  <text x="106" y="179" font-size="13.5" fill="#191b1c"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">apptive@pusan</text>
+  <text x="90" y="218" font-size="12.5" font-weight="500" fill="#c2650a">이메일 형식이 아닙니다.</text>
+
+  <!-- password field (normal state) -->
+  <text x="90" y="252" font-size="13" font-weight="600" fill="#71787f">비밀번호</text>
+  <rect x="90" y="264" width="300" height="44" rx="10" fill="#ffffff" stroke="#dfe2e5" stroke-width="1.5" />
+  <text x="106" y="292" font-size="13.5" fill="#191b1c"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">••••••••</text>
+
+  <!-- submit button -->
+  <rect x="90" y="334" width="300" height="46" rx="10" fill="#4263eb" />
+  <text x="240" y="362" text-anchor="middle" font-size="15" font-weight="600" fill="#ffffff">로그인</text>
+
+  <!-- annotation 1: aria-invalid -->
+  <circle cx="390" cy="174" r="3" fill="#c9ced4" />
+  <path d="M390,174 C 450,174 450,158 505,158" fill="none" stroke="#c9ced4" stroke-width="1.2" />
+  <text x="520" y="152" font-size="13.5" font-weight="600" fill="#191b1c"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">aria-invalid={!!errors.email}</text>
+  <text x="520" y="172" font-size="12.5" fill="#71787f">오류가 있는 동안 입력 칸을 강조</text>
+
+  <!-- annotation 2: error message -->
+  <circle cx="243" cy="214" r="3" fill="#c9ced4" />
+  <path d="M243,214 C 380,214 400,224 505,224" fill="none" stroke="#c9ced4" stroke-width="1.2" />
+  <text x="520" y="218" font-size="13.5" font-weight="600" fill="#191b1c"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">errors.email.message</text>
+  <text x="520" y="238" font-size="12.5" fill="#71787f">스키마에 적어 둔 바로 그 문장</text>
+
+  <!-- annotation 3: register -->
+  <circle cx="390" cy="286" r="3" fill="#c9ced4" />
+  <path d="M390,286 C 450,286 450,296 505,296" fill="none" stroke="#c9ced4" stroke-width="1.2" />
+  <text x="520" y="290" font-size="13.5" font-weight="600" fill="#191b1c"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">{...register('password')}</text>
+  <text x="520" y="310" font-size="12.5" fill="#71787f">값 추적과 blur 처리를 폼에 맡김</text>
+
+  <!-- annotation 4: isSubmitting -->
+  <circle cx="390" cy="357" r="3" fill="#c9ced4" />
+  <path d="M390,357 C 450,357 450,364 505,364" fill="none" stroke="#c9ced4" stroke-width="1.2" />
+  <text x="520" y="358" font-size="13.5" font-weight="600" fill="#191b1c"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">disabled={isSubmitting}</text>
+  <text x="520" y="378" font-size="12.5" fill="#71787f">제출하는 동안 다시 누를 수 없음</text>
+</svg>

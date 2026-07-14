@@ -1,0 +1,69 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  svg { display: block; }
+</style>
+<svg width="1200" height="370" viewBox="0 0 1200 370" xmlns="http://www.w3.org/2000/svg"
+     font-family="Pretendard, 'Apple SD Gothic Neo', sans-serif">
+  <defs>
+    <marker id="arr-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#4263eb" />
+    </marker>
+    <marker id="arr-gray" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#c9ced4" />
+    </marker>
+    <marker id="arr-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#e8730e" />
+    </marker>
+  </defs>
+
+  <!-- caption -->
+  <text x="600" y="44" text-anchor="middle" font-size="13.5" fill="#71787f">제출하면 스키마가 먼저 검사합니다 — onSubmit에는 검증을 통과한 값만 도착합니다</text>
+
+  <!-- main line -->
+  <line x1="100" y1="140" x2="838" y2="140" stroke="#4263eb" stroke-width="2" marker-end="url(#arr-blue)" />
+
+  <!-- nodes -->
+  <circle cx="150" cy="140" r="10" fill="#ffffff" stroke="#4263eb" stroke-width="2" />
+  <circle cx="400" cy="140" r="10" fill="#ffffff" stroke="#4263eb" stroke-width="2" />
+  <circle cx="650" cy="140" r="10" fill="#ffffff" stroke="#4263eb" stroke-width="2" />
+
+  <g text-anchor="middle">
+    <text x="150" y="94" font-size="12.5" font-weight="600" fill="#71787f">폼</text>
+    <text x="150" y="180" font-size="15" font-weight="600" fill="#191b1c">사용자 입력</text>
+
+    <text x="400" y="94" font-size="12.5" font-weight="600" fill="#71787f">제출</text>
+    <text x="400" y="180" font-size="15" font-weight="600" fill="#191b1c"
+          font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">handleSubmit</text>
+
+    <text x="650" y="94" font-size="12.5" font-weight="600" fill="#71787f">zodResolver</text>
+    <text x="650" y="180" font-size="15" font-weight="600" fill="#191b1c">
+      <tspan font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">loginSchema</tspan>
+      <tspan> 검사</tspan>
+    </text>
+  </g>
+
+  <!-- success card -->
+  <rect x="850" y="92" width="260" height="96" rx="12" fill="#eef1fd" stroke="#c8d2f7" stroke-width="1.5" />
+  <text x="980" y="126" text-anchor="middle" font-size="12.5" font-weight="600" fill="#71787f">검증 통과</text>
+  <text x="980" y="152" text-anchor="middle" font-size="15" font-weight="600" fill="#191b1c"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">onSubmit(data)</text>
+  <text x="980" y="174" text-anchor="middle" font-size="12" fill="#71787f">
+    <tspan>data는 </tspan>
+    <tspan font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace" fill="#3b5bdb">LoginInput</tspan>
+  </text>
+
+  <!-- failure branch -->
+  <line x1="650" y1="152" x2="650" y2="256" stroke="#e8730e" stroke-width="1.5" stroke-dasharray="4 5" marker-end="url(#arr-orange)" />
+  <rect x="540" y="262" width="220" height="64" rx="12" fill="#fdf0e5" stroke="#f5cba2" stroke-width="1.5" />
+  <text x="650" y="288" text-anchor="middle" font-size="12.5" fill="#71787f">검증 실패 — onSubmit은 호출되지 않음</text>
+  <text x="650" y="312" text-anchor="middle" font-size="14.5" font-weight="600" fill="#c2650a">
+    <tspan font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace">errors</tspan>
+    <tspan>에 필드별 메시지</tspan>
+  </text>
+
+  <!-- loop back to input -->
+  <path d="M540,294 L100,294 L100,156" fill="none" stroke="#c9ced4" stroke-width="1.4" stroke-dasharray="4 5" marker-end="url(#arr-gray)" />
+  <text x="330" y="286" text-anchor="middle" font-size="12" fill="#71787f">사용자가 고쳐서 다시 제출</text>
+</svg>

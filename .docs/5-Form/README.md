@@ -11,7 +11,8 @@
 1. 익숙한 `useEffect` 방식으로 실습 API를 요청하는 애플리케이션을 만듭니다.
 2. TypeScript로 컴포넌트 구조를 만들고, 손으로 적은 데이터로 화면부터 확인합니다.
 3. 타입이 실행 중에는 사라진다는 사실을 확인하고, Zod로 API 응답을 검증합니다.
-4. React Router v7의 `clientLoader`와 TanStack Query를 단계적으로 도입해 코드를 개선합니다.
+4. 같은 스키마로 로그인 Form의 사용자 입력을 검증합니다.
+5. React Router v7의 `clientLoader`와 TanStack Query를 단계적으로 도입해 코드를 개선합니다.
 
 이 문서는 JavaScript와 Vite 기본 템플릿으로 React의 기본 훅을 써 본 사람을 기준으로 씁니다. TypeScript는 개발이 편해지는 만큼만 다루고, Router의 streaming이나 Query의 세부 캐시 옵션처럼 지금 필요하지 않은 내용은 다루지 않습니다.
 
@@ -378,14 +379,187 @@ export async function getProfiles(signal?: AbortSignal) {
     throw new Error(`프로필 요청 실패: ${response.status}`);
   }
 
-  const data: unknown = await response.json();
-  return profilesSchema.parse(data);
+  return await response.json().then((data) => profileSchema.parse(data));
 }
 ```
 
 응답을 일단 `unknown`으로 받고, `parse()`를 통과한 값만 반환합니다. 검사에 실패하면 `parse()`가 오류를 던지므로, `getProfiles()` 바깥의 세계에는 검증된 `Profile[]`만 존재합니다. 화면마다 같은 검사를 반복할 필요가 없습니다.
 
-## 4. React Router v7: 화면을 그리기 전에 데이터 준비하기
+## 4. Form: 사용자 입력도 바깥에서 온 값이다
+
+애플리케이션 바깥에서 들어오는 값이 API 응답만은 아닙니다. **사용자 입력이야말로 가장 예측하기 어려운 바깥 값**입니다. 이메일 칸에 아무 문자열이나 들어올 수 있고, 비밀번호는 한 글자일 수도 있습니다. 로그인 화면을 만들면서, 방금 배운 스키마를 입력 검증에도 그대로 써 봅시다.
+
+### 제어 컴포넌트 복습
+
+React에서 입력값을 다루는 기본은 `value`와 `onChange`로 State가 입력의 주인이 되는 방식, 곧 제어 컴포넌트(Controlled Component)였습니다.
+
+```tsx
+const [email, setEmail] = useState('');
+
+<input value={email} onChange={(event) => setEmail(event.target.value)} />;
+```
+
+입력이 한두 개라면 이것으로 충분합니다. 문제는 여기에 **검증**이 얹히는 순간부터입니다.
+
+### 검증을 직접 만들면 생기는 일
+
+이메일은 형식이 맞아야 하고, 비밀번호는 8자 이상이어야 한다고 합시다. 손에 익은 도구만으로 만들면 대체로 이런 모양이 됩니다.
+
+```tsx
+import { useEffect, useState, type FormEvent } from 'react';
+
+function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  useEffect(() => {
+    if (!emailTouched) return;
+
+    if (email === '') {
+      setEmailError('이메일을 입력해 주세요.');
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setEmailError('이메일 형식이 아닙니다.');
+    } else {
+      setEmailError(null);
+    }
+  }, [email, emailTouched]);
+
+  useEffect(() => {
+    if (!passwordTouched) return;
+
+    setPasswordError(password.length < 8 ? '비밀번호는 8자 이상이어야 합니다.' : null);
+  }, [password, passwordTouched]);
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    setEmailTouched(true);
+    setPasswordTouched(true);
+
+    // Effect는 렌더링 뒤에 실행되므로, 제출 순간의 값은 여기서 다시 검사해야 합니다.
+    if (!/^\S+@\S+\.\S+$/.test(email) || password.length < 8) {
+      return;
+    }
+
+    login({ email, password });
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        onBlur={() => setEmailTouched(true)}
+      />
+      {emailError && <p>{emailError}</p>}
+
+      <input
+        type="password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        onBlur={() => setPasswordTouched(true)}
+      />
+      {passwordError && <p>{passwordError}</p>}
+
+      <button type="submit">로그인</button>
+    </form>
+  );
+}
+```
+
+`login()`은 서버에 로그인 요청을 보내는 함수라고 가정합니다. 동작은 합니다. 하지만 뜯어 보면 곳곳이 무너져 있습니다.
+
+- 입력이 **2개**인데 State가 **6개**입니다. 값, 오류 문구, 만졌는지 여부가 필드마다 하나씩 필요하고, 필드가 하나 늘 때마다 State 3개와 Effect 1개가 따라옵니다.
+- 이메일 정규식과 "8자 이상"이라는 **같은 규칙이 Effect와 `handleSubmit`에 두 번** 적혀 있습니다. 한쪽만 고치는 사고는 시간문제입니다.
+- 1장에서 Effect는 외부 시스템과의 동기화에 쓰는 도구라고 했습니다. 검증은 외부 시스템이 아닙니다. 게다가 Effect는 렌더링 뒤에 실행되므로 제출 순간의 최신 검증 결과를 보장하지 못하고, 그래서 `handleSubmit`에 중복 검사가 생긴 것입니다.
+
+검증 규칙이 화면 코드 곳곳에 스며들면서, 폼이 커질수록 코드는 규칙이 아니라 배선으로 가득 차게 됩니다.
+
+### 규칙을 스키마로 옮기기
+
+3장에서 했던 것과 똑같이, 규칙을 Zod 스키마 한 곳에 모읍니다. 오류 메시지까지 규칙 옆에 적습니다.
+
+```ts
+// login-schema.ts
+import { z } from 'zod';
+
+export const loginSchema = z.object({
+  email: z.email('이메일 형식이 아닙니다.'),
+  password: z.string().min(8, '비밀번호는 8자 이상이어야 합니다.'),
+});
+
+export type LoginInput = z.infer<typeof loginSchema>;
+```
+
+API 응답을 검증하던 `profileSchema`와 문법이 같습니다. 검증 대상이 서버에서 온 값이냐 사용자가 적은 값이냐만 다를 뿐, "바깥에서 온 값은 스키마로 검사한다"는 원칙은 하나입니다.
+
+### `react-hook-form`으로 폼과 스키마 잇기
+
+이 스키마를 폼에 연결해 주는 라이브러리가 [React Hook Form](https://react-hook-form.com)입니다. React 생태계에서 가장 널리 쓰이는 폼 라이브러리이고, shadcn/ui 같은 컴포넌트 라이브러리도 폼 문서의 첫 번째 선택지로 안내합니다. Zod 스키마와는 `@hookform/resolvers`의 `zodResolver`로 연결합니다.
+
+```bash
+pnpm add react-hook-form @hookform/resolvers
+```
+
+```tsx
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema, type LoginInput } from './login-schema';
+
+function LoginForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '' },
+  });
+
+  async function onSubmit(data: LoginInput) {
+    // data는 loginSchema를 통과한 값입니다.
+    await login(data);
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <label>
+        이메일
+        <input type="email" aria-invalid={!!errors.email} {...register('email')} />
+      </label>
+      {errors.email && <p role="alert">{errors.email.message}</p>}
+
+      <label>
+        비밀번호
+        <input type="password" aria-invalid={!!errors.password} {...register('password')} />
+      </label>
+      {errors.password && <p role="alert">{errors.password.message}</p>}
+
+      <button type="submit" disabled={isSubmitting}>
+        로그인
+      </button>
+    </form>
+  );
+}
+```
+
+![react-hook-form과 Zod 스키마가 로그인 화면의 각 요소와 이어지는 모습](./assets/login-form-states.png)
+
+앞의 코드에서 무엇이 사라졌는지 봅시다.
+
+- `register('email')`이 값 추적과 `blur` 처리를 폼에 등록합니다. 직접 만들던 State 6개와 Effect 2개가 전부 사라졌습니다.
+- `handleSubmit(onSubmit)`은 제출 순간 `zodResolver`를 통해 `loginSchema`로 검사하고, **실패하면 `onSubmit`을 호출하지 않은 채** `errors`에 필드별 메시지를 채웁니다. `errors.email.message`는 스키마에 적어 둔 바로 그 문장입니다.
+- `onSubmit`의 `data`는 `LoginInput` 타입입니다. 이 함수 안에서는 검증을 통과한 값만 다룬다는 것이 타입으로 보장됩니다.
+- `isSubmitting`으로 제출 중 버튼을 잠급니다.
+
+![사용자 입력이 스키마 검사를 거쳐 onSubmit에 도착하기까지](./assets/form-validation-flow.png)
+
+한 가지 짚어 둘 점이 있습니다. `register`는 타이핑마다 컴포넌트를 다시 렌더링하지 않도록 입력을 폼이 직접 지켜보는 방식으로 동작합니다. 값의 관리를 State가 아니라 폼 라이브러리에 맡긴 것인데, 이 역시 이번 회차의 문장과 같은 방향입니다. **입력을 지켜보고 검증하는 일이 컴포넌트 바깥으로 옮겨진 것**입니다. 물론 값에 따라 화면을 바꿔야 할 때를 위한 제어 방식(`Controller`, `watch`)도 있지만, 이번 회차에서는 기본 형태만 다룹니다.
+
+## 5. React Router v7: 화면을 그리기 전에 데이터 준비하기
 
 이번 회차의 기본 구현입니다. React Router의 Framework Mode에서 Route Module은 URL, 데이터 로딩, 오류 처리를 한곳에 모읍니다.
 
@@ -510,7 +684,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 경로를 이동하는 동안의 작은 진행 표시가 필요해지면 그때 `useNavigation`을 더하면 됩니다. 이번 단계에서는 위의 기본 흐름만 완성합니다.
 
-## 5. TanStack Query: 서버 데이터를 캐시로 관리하기
+## 6. TanStack Query: 서버 데이터를 캐시로 관리하기
 
 React Router의 `clientLoader`는 **언제 데이터를 가져와서 언제 화면을 그릴지**를 관리합니다. TanStack Query는 가져온 서버 데이터를 **어떤 키로 저장하고 언제 다시 확인할지**를 관리합니다. 역할이 다르기 때문에 함께 쓸 수 있습니다.
 
@@ -694,7 +868,7 @@ export default function Profiles({ loaderData }: Route.ComponentProps) {
 - React Router: 화면을 열기 전에 첫 데이터를 준비합니다.
 - TanStack Query: 그 데이터를 캐시에 보관하고 이후의 갱신을 맡습니다.
 
-## 6. Suspense: 기다림을 컴포넌트 바깥으로
+## 7. Suspense: 기다림을 컴포넌트 바깥으로
 
 loader 없이 Query가 직접 첫 요청을 시작하는 화면이라면 어떨까요? 방금 본 것처럼 `isPending` 분기가 필요해집니다. Suspense는 이 기다림마저 컴포넌트 바깥으로 옮기는 React의 장치입니다. 컴포넌트가 "아직 그릴 데이터가 없다"고 알리면, 가장 가까운 `<Suspense>`가 렌더링을 잠시 미루고 `fallback`을 대신 보여 줍니다.
 
@@ -792,7 +966,7 @@ export default function Profiles() {
 
 이 표에서 눈여겨볼 것은 네트워크가 아니라 **데이터가 없는 순간을 누가 책임지는가**입니다. 그 책임이 컴포넌트 안에 남아 있는 두 방식에서만 로딩 분기가 필요합니다.
 
-## 7. 그 상태는 누가 가져야 할까
+## 8. 그 상태는 누가 가져야 할까
 
 마지막으로, 상태를 어디에 둘지 고르는 기준을 정리합니다.
 
@@ -812,6 +986,7 @@ URL에 맞는 데이터를 한 번 읽어 오는 화면이라면 `clientLoader`�
 - 입구에만 타입을 적으면 나머지는 TypeScript가 추론합니다. 제네릭은 그 추론을 함수와 타입에까지 넓힌 것입니다.
 - 타입은 빌드하면 사라지므로 실행 중의 값을 검사하지 못합니다. `as`는 검증이 아니라 믿어 달라는 선언입니다.
 - 바깥에서 들어오는 값은 `unknown`으로 받아 Zod 스키마로 검증하고, `z.infer`로 타입까지 함께 얻습니다.
+- 사용자 입력도 바깥에서 온 값입니다. 검증 규칙과 오류 메시지는 스키마 한 곳에 적고, `react-hook-form`의 `zodResolver`로 폼과 잇습니다. `onSubmit`에는 검증을 통과한 값만 도착합니다.
 - React Router Framework Mode에서는 데이터 요청을 `clientLoader`에 두고 `loaderData`로 읽습니다. 컴포넌트는 데이터가 준비된 뒤에 렌더링됩니다.
 - 캐시, 요청 취소, 재검증, 재시도를 `useEffect`로 직접 만드는 대신 `useQuery` 한 번으로 얻습니다.
 - loader의 값을 Query의 `initialData`로 넘기면 로딩 분기 없이 캐시와 갱신을 얻습니다.
@@ -830,6 +1005,9 @@ URL에 맞는 데이터를 한 번 읽어 오는 화면이라면 `clientLoader`�
 - [TypeScript: Interfaces](https://www.typescriptlang.org/docs/handbook/interfaces.html)
 - [TypeScript: Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
 - [Zod: Basic usage](https://zod.dev/basics)
+- [React: input과 제어 컴포넌트](https://react.dev/reference/react-dom/components/input)
+- [React Hook Form: Get Started](https://react-hook-form.com/get-started)
+- [React Hook Form: zodResolver](https://github.com/react-hook-form/resolvers)
 - [React Router: Framework Mode](https://reactrouter.com/start/modes#framework)
 - [React Router: SPA Mode](https://reactrouter.com/how-to/spa)
 - [React Router: Data Loading](https://reactrouter.com/start/framework/data-loading)
