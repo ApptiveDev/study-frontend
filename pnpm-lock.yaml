@@ -11,8 +11,12 @@ importers:
       '@radix-ui/react-select':
         specifier: ^2.2.6
         version: 2.2.6(@types/react-dom@19.1.9(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+    devDependencies:
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
 
-  projects/1-React:
+  projects/1-react:
     dependencies:
       '@tailwindcss/vite':
         specifier: ^4.1.16
