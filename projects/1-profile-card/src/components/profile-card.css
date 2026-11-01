@@ -1,0 +1,13 @@
+.card {
+  border: 1px solid #ffb2d6;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  text-align: left;
+}
+
+.role {
+  color: rgb(83, 84, 82);
+  font-size: 14px;
+}
+
