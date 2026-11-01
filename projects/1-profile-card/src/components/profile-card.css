@@ -1,0 +1,12 @@
+.card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  text-align: left;
+}
+
+.role {
+  color: gray;
+  font-size: 14px;
+}
