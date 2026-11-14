@@ -1,4 +1,4 @@
-import type { Post } from './types';
+import type { Comment, Post } from './types';
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
@@ -18,4 +18,24 @@ export async function getPosts(): Promise<Post[]> {
   return response.json();
 }
 
-// 여기에 getPost와 getComments를 작성해 주세요
+export async function getPost(id: number): Promise<Post> {
+  await wait();
+  const response = await fetch(`${BASE_URL}/posts/${id}`);
+
+  if (!response.ok) {
+    throw new Error('게시글을 불러오지 못했습니다');
+  }
+
+  return response.json();
+}
+
+export async function getComments(postId: number): Promise<Comment[]> {
+  await wait();
+  const response = await fetch(`${BASE_URL}/posts/${postId}/comments`);
+
+  if (!response.ok) {
+    throw new Error('댓글을 불러오지 못했습니다');
+  }
+
+  return response.json();
+}
